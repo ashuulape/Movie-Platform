@@ -16,7 +16,7 @@ const Watch = () => {
   useEffect(() => {
     const fetchdata = async (state) => {
       const res = await axios.get(
-        `http://localhost:5000/api/movies/${state.id}`,
+        `${import.meta.env.VITE_BACKEND}/api/movies/${state.id}`,
       );
       setmoviedata(res?.data);
       console.log(res?.data);

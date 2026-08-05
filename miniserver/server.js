@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+require("dotenv").config();
 
 
 const app = express();
@@ -16,7 +17,8 @@ app.use(cors({
 // Proxy route — frontend calls this instead of the external API directly
 app.get('/api/movies/:id', async (req, res) => {
   try {
-    const response = await axios.get(`https://api.2embed.cc/movie?tmdb_id=${req.params.id}` );
+    
+    const response = await axios.get(`${process.env.SITE_URL}${req.params.id}` );
     res.json(response.data);
   } catch (err) {
     console.error(err.message);
