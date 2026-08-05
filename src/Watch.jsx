@@ -11,6 +11,7 @@ const Watch = () => {
   const { state } = useLocation();
   const [moviedata, setmoviedata] = useState(null);
   const [source, setsource] = useState(null);
+  const [serverno, setserverno] = useState(1);
 
   useEffect(() => {
     const fetchdata = async (state) => {
@@ -32,7 +33,12 @@ const Watch = () => {
           {state && (
             <iframe
               className="min-w-[70vw] w-full max-w-400 aspect-video  md:rounded-2xl"
-              src={source}
+              src={
+                source ||
+                "https://vidrock.net/movie/1081003" ||
+                "https://vidfast.vc/movie/tt22084616" ||
+                "https://vidnest.fun/movie/1081003?autoplay=1"
+              }
               frameborder="0"
               allowfullscreen="true"
             ></iframe>
