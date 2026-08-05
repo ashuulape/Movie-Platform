@@ -2,15 +2,14 @@ import React, { useState } from "react";
 
 import Movies from "./components/Movies";
 import Navbar from "./components/Navbar";
+import { Sidebar } from "./components/Sidebar";
 const Home = () => {
-  const [moviedata, setmoviedata] = useState([]);
-  const [search, setsearch] = useState("");
-
   return (
     <section>
-      <Navbar setmoviedata={setmoviedata} />
-      <div className="px-10 py-20 ">
-        <Movies data={moviedata} />
+      <Sidebar />
+      <Navbar />
+      <div className="px-10 py-2 ">
+        <Movies />
       </div>
     </section>
   );

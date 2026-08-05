@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Data from "./components/Data";
 
 import axios from "axios";
+import Bottom from "./components/Bottom";
+import { dataContext } from "./Context/Moviedatacontext";
 
 const Watch = () => {
   const { state } = useLocation();
   const [moviedata, setmoviedata] = useState(null);
   const [source, setsource] = useState(null);
-  const [serverno, setserverno] = useState(true);
 
   useEffect(() => {
     const fetchdata = async (state) => {
@@ -24,32 +25,23 @@ const Watch = () => {
   }, []);
 
   return (
-    <section className="w-full h-fit overflow-x-clip ">
+    <section className="w-fit h-fit">
       <Navbar />
-      <div className="flex xl:flex-row flex-col h-auto w-[100vw] ">
-        <div className="py-10 ">
-          {source && serverno ? (
+      <div className="flex   xl:flex-row flex-col w-full h-auto w-[100vw] border-b-1 border-white/30 ">
+        <div className="py-10 flex-7 md:px-8 outline-1 outline-white/30 ">
+          {state && (
             <iframe
-              className="min-w-[70vw] w-full max-w-400 aspect-video flex-7 rounded-2xl"
-              src={`https://www.2embed.online/embed/movie/${state.id}`}
-              frameborder="0"
-              allowfullscreen
-            ></iframe>
-          ) : (
-            <iframe
-              className="min-w-[60vw] w-full max-w-400 aspect-video  rounded-2xl"
+              className="min-w-[70vw] w-full max-w-400 aspect-video  md:rounded-2xl"
               src={source}
               frameborder="0"
-              allowfullscreen
+              allowfullscreen="true"
             ></iframe>
           )}
         </div>
         {moviedata && <Data moviedata={moviedata} setsource={setsource} />}
       </div>
-      <div className="w-full flex gap-4">
-        <button onClick={() => setserverno(true)}>server1</button>
-        <button onClick={() => setserverno(false)}>server2</button>
-      </div>
+      <div className="w-full flex gap-4"></div>
+      <Bottom moviedata={moviedata} />
     </section>
   );
 };

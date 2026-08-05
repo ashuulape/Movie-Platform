@@ -1,14 +1,39 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Card } from "./Card";
+import { dataContext } from "../Context/Moviedatacontext";
+import axios from "axios";
 
-const Movies = ({ data }) => {
+const Movies = () => {
+  const { moviedata, setmoviedata } = useContext(dataContext);
+  const options = {
+    method: "GET",
+    url: "https://api.themoviedb.org/3/movie/now_playing",
+    params: { language: "en-US", page: "1" },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
+    },
+  };
+  useEffect(() => {
+    async function fetchplayingMovies() {
+      try {
+        const { data } = await axios.request(options);
+        console.log(data);
+        setmoviedata(data?.results);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchplayingMovies();
+  }, []);
+
   return (
     <div>
-      <h1 className="text-white text-2xl w-full text-center">Deatils</h1>
       <div className="w-full h-fit flex  flex-wrap gap-10">
-        {data.map((e, key) => {
-          return <Card key={key} data={e} />;
-        })}
+        {moviedata &&
+          moviedata.map((e, key) => {
+            return <Card key={key} data={e} />;
+          })}
       </div>
     </div>
   );

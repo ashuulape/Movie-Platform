@@ -3,19 +3,24 @@ import { Link, useNavigate } from "react-router-dom";
 
 export const Card = ({ data }) => {
   const navigate = useNavigate();
+  console.log(data);
   const { original_title, poster_path, id, key } = data;
-  const handleroute = (id) => {
-    (console.log(id), navigate(`/watch/${id}`, { state: { id } }));
+  const handleroute = (id, b) => {
+    navigate(`/watch/${b}`, { state: { id } });
   };
 
   return (
     <div
       id={key}
-      className="max-w-[10vw] w-50 min-w-75 h-fit flex-1 "
-      onClick={() => handleroute(id)}
+      className="max-w-full w-80 min-w-50 h-fit flex-1 object-contain "
+      onClick={() => handleroute(id, original_title)}
     >
-      <img src={`https://image.tmdb.org/t/p/w200${poster_path}`} alt="" />
-      <h1 className="text-wrap w-4/5 text-center font-bold">
+      <img
+        className="w-full"
+        src={`https://image.tmdb.org/t/p/w400${poster_path}`}
+        alt=""
+      />
+      <h1 className="text-wrap w-full text-center font-bold">
         {original_title}
       </h1>
     </div>

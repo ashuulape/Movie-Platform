@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../assets/logo.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { dataContext } from "../Context/Moviedatacontext";
+import { searchContext } from "../Context/MovieSearchcontext";
+import { SidebarBtn } from "./Sidebar";
 
-const Navbar = ({ setmoviedata }) => {
+const Navbar = () => {
   const navigate = useNavigate();
-  const [search, setsearch] = useState("");
+
+  const { setmoviedata } = useContext(dataContext);
+  const { search, setsearch } = useContext(searchContext);
 
   async function fetchdata(search) {
+    console.log("clicked");
+    navigate("/");
     const res = await axios.get(
       `https://api.themoviedb.org/3/search/movie?query=${search}&page=1`,
       {
@@ -16,12 +23,21 @@ const Navbar = ({ setmoviedata }) => {
         },
       },
     );
-
+    console.log(res.data);
     setmoviedata(res?.data?.results);
   }
 
+  // window.addEventListener("keydown", (e) => {
+  //   if (e.key === "Enter") {
+  //     if (search !== "") {
+  //       fetchdata(search);
+  //     }
+  //   }
+  // });
+
   return (
-    <section className="w-full h-[8dvh] bg-[#0f0f0f] flex justify-around">
+    <section className="w-screen sticky top-0 h-[8dvh] bg-[#0f0f0f]/20 backdrop-blur-3xl flex justify-around outline-white/30 outline-1">
+      <SidebarBtn />
       <div className="flex h-full items-center">
         <img
           onClick={() => navigate("/")}
