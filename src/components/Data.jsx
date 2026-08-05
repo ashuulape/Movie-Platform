@@ -28,7 +28,7 @@ const data = ({ moviedata, setsource }) => {
             {Math.floor(moviedata?.vote_average * 10) / 10}
           </div>
           <h2 className="text-sm text-white/50">{moviedata?.overview}</h2>
-          <div className="w-full flex gap-5 ">
+          <div className="w-fit flex gap-5 flex-wrap ">
             {moviedata.genres.map((e, idx) => {
               return (
                 <span

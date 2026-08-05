@@ -1,4 +1,18 @@
 {
+<<<<<<< HEAD
+=======
+  "name": "miniserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+>>>>>>> 1ec73db1e41249f16c597dc2bfbf1b7e6f22fedb
   "dependencies": {
     "axios": "^1.19.0",
     "cors": "^2.8.6",

@@ -4,7 +4,11 @@ const axios = require('axios');
 
 
 const app = express();
+<<<<<<< HEAD
 const PORT = 5000;
+=======
+const PORT = process.env.PORT || 5000;
+>>>>>>> 1ec73db1e41249f16c597dc2bfbf1b7e6f22fedb
 
 app.use(cors({
   origin: true // change to your frontend's dev URL / deployed URL
