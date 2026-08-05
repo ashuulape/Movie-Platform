@@ -1,6 +1,4 @@
 {
-<<<<<<< HEAD
-=======
   "name": "miniserver",
   "version": "1.0.0",
   "description": "",
@@ -12,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
->>>>>>> 1ec73db1e41249f16c597dc2bfbf1b7e6f22fedb
   "dependencies": {
     "axios": "^1.19.0",
     "cors": "^2.8.6",
