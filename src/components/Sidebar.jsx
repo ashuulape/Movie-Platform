@@ -14,7 +14,7 @@ export const SidebarBtn = () => {
       className=" w-20 aspect-square absolute top-0 left-0 z-100 pointer-events-auto flex items-center justify-center"
     >
       <img
-        className="h-10 w-10"
+        className="h-6 w-6"
         src="https://img.icons8.com/?size=100&id=8113&format=png&color=ffffff"
         alt=""
       />

@@ -8,13 +8,14 @@ import { SidebarBtn } from "./Sidebar";
 
 const Navbar = () => {
   const navigate = useNavigate();
-
+  const { loading, setLoading } = useContext(searchContext);
   const { setmoviedata } = useContext(dataContext);
   const { search, setsearch } = useContext(searchContext);
 
   async function fetchdata(search) {
     console.log("clicked");
     navigate("/");
+    setLoading(true);
     const res = await axios.get(
       `https://api.themoviedb.org/3/search/movie?query=${search}&page=1`,
       {
@@ -25,6 +26,7 @@ const Navbar = () => {
     );
     console.log(res.data);
     setmoviedata(res?.data?.results);
+    setLoading(false);
   }
 
   // window.addEventListener("keydown", (e) => {

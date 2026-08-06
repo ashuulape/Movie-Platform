@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const data = ({ moviedata, setsource }) => {
-  setsource(moviedata?.embed_imdb);
-  let cast;
-  if (moviedata) {
-    cast = moviedata?.cast.slice(0, 4);
-  }
+  useEffect(() => {
+    if (moviedata?.embed_imdb && typeof setsource === "function") {
+      setsource(moviedata.embed_imdb);
+    }
+  }, [moviedata, setsource]);
+
+  const cast = moviedata?.cast ? moviedata.cast.slice(0, 4) : [];
+  const genres = moviedata?.genres || [];
+
   return (
     <section className=" py-12 flex flex-col gap-10 px-8">
       <div className="outline-1 outline-white/30 w-fit rounded-2xl">
@@ -25,15 +29,15 @@ const data = ({ moviedata, setsource }) => {
               src="https://img.icons8.com/?size=15&id=7856&format=png&color=ffffff"
               alt=""
             />
-            {Math.floor(moviedata?.vote_average * 10) / 10}
+            {moviedata?.vote_average ? Math.floor(moviedata.vote_average * 10) / 10 : "N/A"}
           </div>
           <h2 className="text-sm text-white/50">{moviedata?.overview}</h2>
           <div className="w-fit flex gap-5 flex-wrap ">
-            {moviedata.genres.map((e, idx) => {
+            {genres.map((e, idx) => {
               return (
                 <span
                   className=" border-1 text-sm border-white/30 rounded px-2 py-1"
-                  id={idx}
+                  key={idx}
                 >
                   {e}
                 </span>
@@ -43,7 +47,7 @@ const data = ({ moviedata, setsource }) => {
           <div className="flex flex-col text-sm">
             <span>
               <span className="font-semibold"> Cast :</span>{" "}
-              {cast.map((e) => e?.name + " ,")}
+              {cast.map((e) => e?.name).filter(Boolean).join(", ")}
             </span>
             <span>
               <span className="font-semibold"> Release Date :</span>{" "}
@@ -51,10 +55,9 @@ const data = ({ moviedata, setsource }) => {
             </span>
             <span>
               <span className="font-semibold"> Runtime :</span>{" "}
-              {Math.floor(moviedata?.runtime / 60) +
-                "h " +
-                Math.floor(moviedata?.runtime % 60) +
-                "min"}
+              {moviedata?.runtime
+                ? `${Math.floor(moviedata.runtime / 60)}h ${Math.floor(moviedata.runtime % 60)}min`
+                : "N/A"}
             </span>
             <span>
               <span className="font-semibold"> Status :</span>{" "}
