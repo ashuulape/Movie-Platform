@@ -4,7 +4,7 @@ export const dataContext = createContext();
 
 const Moviedatacontext = ({ children }) => {
   const [moviedata, setmoviedata] = useState(null);
-  const [SidebarOpen, setSidebarOpen] = useState(true);
+  const [SidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <dataContext.Provider

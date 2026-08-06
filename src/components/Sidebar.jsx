@@ -9,7 +9,7 @@ export const SidebarBtn = () => {
   return (
     <div
       onClick={() => {
-        (console.log("clicked"), setSidebarOpen(true));
+        setSidebarOpen(true);
       }}
       className=" w-20 aspect-square absolute top-0 left-0 z-100 pointer-events-auto flex items-center justify-center"
     >
