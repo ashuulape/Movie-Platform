@@ -6,7 +6,7 @@ import { dataContext } from "../Context/Moviedatacontext";
 import { searchContext } from "../Context/MovieSearchcontext";
 import { SidebarBtn } from "./Sidebar";
 
-const Navbar = () => {
+const Navbar = ({ side }) => {
   const navigate = useNavigate();
   const { loading, setLoading } = useContext(searchContext);
   const { setmoviedata } = useContext(dataContext);
@@ -38,7 +38,7 @@ const Navbar = () => {
 
   return (
     <section className="w-screen sticky z-10 top-0 h-[8dvh] bg-[#0f0f0f]/20 backdrop-blur-3xl flex justify-around outline-white/30 outline-1">
-      <SidebarBtn />
+      {side && <SidebarBtn />}
       <div className="flex h-full items-center">
         <img
           onClick={() => navigate("/")}

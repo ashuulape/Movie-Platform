@@ -39,7 +39,7 @@ export default function Watch() {
 
   return (
     <section className="w-fit h-fit min-h-screen min-w-full">
-      <Navbar />
+      <Navbar side={false} />
       {loading ? (
         <WatchSkeleton />
       ) : (
@@ -49,7 +49,7 @@ export default function Watch() {
               <div
                 className="absolute inset-0 blur-2xl opacity-30 scale-110 "
                 style={{
-                  backgroundImage: `url(https://image.tmdb.org/t/p/original/qeQJx07rK2xm8SD2sJxFKhE7gs0.jpg)`,
+                  backgroundImage: `url(${moviedata?.backdrops[0]})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}

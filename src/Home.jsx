@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <section>
       <Sidebar />
-      <Navbar />
+      <Navbar side={true} />
       <div className="px-10 py-2 ">
         <Movies />
       </div>
