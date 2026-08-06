@@ -13,7 +13,6 @@ const Navbar = () => {
   const { search, setsearch } = useContext(searchContext);
 
   async function fetchdata(search) {
-    console.log("clicked");
     navigate("/");
     setLoading(true);
     const res = await axios.get(
@@ -38,7 +37,7 @@ const Navbar = () => {
   // });
 
   return (
-    <section className="w-screen sticky top-0 h-[8dvh] bg-[#0f0f0f]/20 backdrop-blur-3xl flex justify-around outline-white/30 outline-1">
+    <section className="w-screen sticky z-10 top-0 h-[8dvh] bg-[#0f0f0f]/20 backdrop-blur-3xl flex justify-around outline-white/30 outline-1">
       <SidebarBtn />
       <div className="flex h-full items-center">
         <img

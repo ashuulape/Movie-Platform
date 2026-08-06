@@ -18,9 +18,9 @@ const data = ({ moviedata, setsource }) => {
 
   return (
     <section className=" py-12 flex flex-col gap-10 px-8">
-      <div className="outline-1 flex flex-row gap-4 overflow-hidden outline-white/30 w-full rounded-2xl">
+      <div className="outline-1 flex h-fit flex-row gap-4 overflow-hidden outline-white/30 w-full rounded-2xl">
         <img
-          className="rounded-lg h-70 flex-4"
+          className="rounded-lg 2xl:h-70 h-90 px-30 xl:px-0"
           src={`https://image.tmdb.org/t/p/w200${moviedata?.poster}`}
           alt=""
         />

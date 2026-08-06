@@ -45,16 +45,16 @@ export default function Watch() {
       ) : (
         <>
           <div className="flex xl:flex-row flex-col w-full h-auto w-[100vw] border-b-1 border-white/30 ">
-            <div className="py-10 flex-7 md:px-8 outline-1 outline-white/30 ">
-              {state && (
-                <Screen id={state.id} source={moviedata?.embed_imdb} />
-                // <iframe
-                //   className="min-w-[70vw] w-full max-w-400 aspect-video md:rounded-2xl"
-                //   src={`https://www.2embed.online/embed/movie/${state.id}`}
-                //   frameBorder="0"
-                //   allowFullScreen={true}
-                // ></iframe>
-              )}
+            <div className="py-10 flex-7 md:px-8 outline-1 outline-white/30 backdrop-blur-3xl ">
+              <div
+                className="absolute inset-0 blur-2xl opacity-30 scale-110 "
+                style={{
+                  backgroundImage: `url(https://image.tmdb.org/t/p/original/qeQJx07rK2xm8SD2sJxFKhE7gs0.jpg)`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
+              {state && <Screen id={state.id} source={moviedata?.embed_imdb} />}
             </div>
             {moviedata && <Data moviedata={moviedata} setsource={setsource} />}
           </div>
@@ -72,7 +72,7 @@ export const Screen = ({ id, source }) => {
   if (serverno === 1) {
     return (
       <iframe
-        className="min-w-[70vw] w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
         src={`${import.meta.env.VITE_SERVER_1}${id}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -82,7 +82,7 @@ export const Screen = ({ id, source }) => {
   if (serverno === 2) {
     return (
       <iframe
-        className="min-w-[70vw] w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
         src={`${import.meta.env.VITE_SERVER_2}${id}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -92,7 +92,7 @@ export const Screen = ({ id, source }) => {
   if (serverno === 3) {
     return (
       <iframe
-        className="min-w-[70vw] w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
         src={`${import.meta.env.VITE_SERVER_3}${id}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -102,7 +102,7 @@ export const Screen = ({ id, source }) => {
   if (serverno === 4) {
     return (
       <iframe
-        className="min-w-[70vw] w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
         src={`${import.meta.env.VITE_SERVER_4}${id}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -112,7 +112,7 @@ export const Screen = ({ id, source }) => {
   if (serverno === 5) {
     return (
       <iframe
-        className="min-w-[70vw] w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
         src={`${import.meta.env.VITE_SERVER_5}${id}`}
         frameBorder="0"
         allowFullScreen={true}
