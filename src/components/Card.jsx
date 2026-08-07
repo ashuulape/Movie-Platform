@@ -9,10 +9,10 @@ export const Card = ({ data }) => {
     vote_average,
     id,
     key,
-    genre_ids,
+
     release_date,
   } = data;
-  console.log(genre_ids);
+
   useEffect(() => {}, [data]);
 
   const handleroute = (id, b) => {

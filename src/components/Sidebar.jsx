@@ -5,7 +5,8 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 export const SidebarBtn = () => {
-  const { setSidebarOpen } = useContext(dataContext);
+  const { setSidebarOpen, setmovielistno, movielistno } =
+    useContext(dataContext);
   return (
     <div
       onClick={() => {
@@ -23,12 +24,13 @@ export const SidebarBtn = () => {
 };
 
 export const Sidebar = () => {
-  const { SidebarOpen, setSidebarOpen } = useContext(dataContext);
+  const { SidebarOpen, setSidebarOpen, setmovielistno, movielistno } =
+    useContext(dataContext);
   const discover = [
-    { text: "Now Playing", fun: "fetchplayingMovies" },
-    { text: "Popular", fun: "PopularMovies" },
-    { text: "Top Rating", fun: "TopMovies" },
-    { text: "Upcoming", fun: "Upcomingmovies" },
+    { text: "Now Playing", no: 0 },
+    { text: "Popular", no: 1 },
+    { text: "Top Rating", no: 2 },
+    { text: "Upcoming", no: 3 },
   ];
 
   useGSAP(() => {
@@ -44,10 +46,15 @@ export const Sidebar = () => {
       className="w-[30vw] max-w-100 min-w-50 -translate-x-50 md:-translate-x-[25vw] fixed z-10 h-full bg-black/40 backdrop-blur-xl outline-r outline-1 outline-white/30"
     >
       <div className="flex items-center h-20 w-full justify-between"></div>
-      <div className="flex flex-col w-full justify-center gap-1 pb-10 ">
+      <div className="flex flex-col w-full justify-center gap-1 pb-10  ">
         {discover.map((e) => {
           return (
-            <h1 className="flex items-center justify-end text-sm w-full text-end h-15 font-semibold uppercase px-4 py-2 bg-black/30  ">
+            <h1
+              onClick={() => {
+                setmovielistno(e?.no);
+              }}
+              className="flex items-center justify-end text-sm w-full text-end h-15 font-semibold uppercase px-4 py-2 bg-black/30 pointer-events-auto "
+            >
               {e?.text}
             </h1>
           );
