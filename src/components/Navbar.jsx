@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import logo from "../assets/logo.png";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { dataContext } from "../Context/Moviedatacontext";
@@ -28,34 +28,26 @@ const Navbar = ({ side }) => {
     setLoading(false);
   }
 
-  // window.addEventListener("keydown", (e) => {
-  //   if (e.key === "Enter") {
-  //     if (search !== "") {
-  //       fetchdata(search);
-  //     }
-  //   }
-  // });
-
   return (
-    <section className="w-screen sticky z-10 top-0 h-15 md:h-[8dvh] bg-[#0f0f0f]/20 backdrop-blur-3xl flex justify-between pr-4 pl-2 md:pr-10 md:pl-4 outline-white/30 outline-1">
-      <div className="flex gap-0">
+    <section className="w-[100dvw] sticky z-10 top-0 h-15 md:h-[8dvh] bg-[#0f0f0f]/20 backdrop-blur-3xl flex justify-between   sm:px-10 outline-white/30 outline-1">
+      <div className="flex gap-0 sm:gap-4">
         {side && <SidebarBtn />}
         <div
           onClick={() => navigate("/")}
-          className="flex h-full items-center justify-center"
+          className="flex  h-full items-center justify-center border-r-1  border-white/30"
         >
           <img
             className="md:h-10 h-8 rotate-z-180 "
             src="https://img.icons8.com/?size=200&id=37326&format=png&color=f1f1f1"
             alt=""
           />
-          <h2 className="md:text-2xl text-xl md:px-2 px-0 h-fit w-fit font-semibold tracking-tighter font-roboto pointer-events-none">
+          <h2 className="md:text-2xl text-sm md:px-2 px-0 h-fit w-fit font-semibold tracking-tighter font-roboto pointer-events-none">
             FreeTube
           </h2>
         </div>
       </div>
-      <div className="flex h-full items-center py-3">
-        <div className="h-full min-w-45  w-[30vw] flex overflow-hidden rounded-4xl outline-1 outline-white/20">
+      <div className="flex h-full  items-center py-3">
+        <div className="h-full min-w-45  w-[30vw] max-w-150 flex overflow-hidden rounded-4xl outline-1 outline-white/20">
           <input
             onChange={(e) => setsearch(e.target.value)}
             value={search}
@@ -65,7 +57,7 @@ const Navbar = ({ side }) => {
 
           <button
             onClick={() => fetchdata(search)}
-            className="h-full min-w-fit  aspect-square bg-[#202526] flex justify-center p-2 text-white flex-1"
+            className="h-full min-w-fit  aspect-square bg-[#202526]/40 flex justify-center p-2 text-white flex-1"
           >
             <img
               src="https://img.icons8.com/?size=100&id=aBNtkpYvycsP&format=png&color=ffffff"
@@ -74,10 +66,10 @@ const Navbar = ({ side }) => {
           </button>
         </div>
       </div>
-      <div className="h-full py-4">
+      <div className="h-full py-4 border-l-1 border-white/30">
         <a target="blank" href="https://github.com/ashuulape">
           <img
-            className="h-full"
+            className="h-full px-2"
             src="https://img.icons8.com/?size=150&id=zuHqpgzrusU5&format=png&color=f1f1f1"
             alt="github"
           />

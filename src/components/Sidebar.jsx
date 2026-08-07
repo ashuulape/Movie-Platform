@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import logo from "../assets/logo.png";
+
 import { dataContext } from "../Context/Moviedatacontext";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -11,7 +11,7 @@ export const SidebarBtn = () => {
       onClick={() => {
         setSidebarOpen((prev) => !prev);
       }}
-      className=" h-full aspect-square relative left-0  z-100 pointer-events-auto flex items-center justify-center"
+      className=" h-full w-fit px-2 relative left-0  z-100 pointer-events-auto flex items-center justify-center"
     >
       <img
         className="h-6 w-6"
@@ -32,13 +32,16 @@ export const Sidebar = () => {
   ];
 
   useGSAP(() => {
-    gsap.to("#Sidebar", { x: SidebarOpen ? "0vw" : "-50vw" });
+    gsap.to("#Sidebar", {
+      x: SidebarOpen ? "0vw" : "-70dvw",
+      ease: "power2.inOut",
+    });
   }, [SidebarOpen]);
 
   return (
     <section
       id="Sidebar"
-      className="md:w-[20vw] w-50 -translate-x-50 md:-translate-x-[25vw] fixed z-10 h-full bg-black/40 backdrop-blur-xl outline-r outline-1 outline-white/30"
+      className="w-[30vw] max-w-100 min-w-50 -translate-x-50 md:-translate-x-[25vw] fixed z-10 h-full bg-black/40 backdrop-blur-xl outline-r outline-1 outline-white/30"
     >
       <div className="flex items-center h-20 w-full justify-between"></div>
       <div className="flex flex-col w-full justify-center gap-1 pb-10 ">
