@@ -4,8 +4,8 @@ const Bottom = ({ moviedata }) => {
   console.log(moviedata);
   return (
     <section>
-      <div className="flex md:flex-row flex-col h-fit w-[100dvw] gap-5 md:gap-10  ">
-        <div className="flex-4 outline-1 outline-white/30  px-10 py-12">
+      <div className="flex xl:flex-row flex-col h-fit w-[100dvw] gap-5 md:gap-10  ">
+        <div className="flex-4 outline-1 outline-white/30 px-4 py-6  sm:px-10 sm:py-12">
           <div className="aspect-video w-full flex gap-4 flex-col items-center ">
             <h1 className="font-bold text-2xl">Trailer:</h1>
             <iframe
@@ -17,7 +17,7 @@ const Bottom = ({ moviedata }) => {
             ></iframe>
           </div>
         </div>
-        <div className="flex-6 flex gap-8 flex-col pt-10 px-10">
+        <div className="flex-6 flex gap-8 flex-col px-4 sm:pt-10 sm:px-10">
           <h1 className="text-2xl font-bold w-full text-center">Comments</h1>
           <div className="flex flex-col gap-2 h-[] overflow-y-clip ">
             {moviedata?.reviews.map((e) => {

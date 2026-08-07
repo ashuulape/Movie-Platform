@@ -46,7 +46,7 @@ export default function Watch() {
       ) : (
         <>
           <div className="flex xl:flex-row flex-col w-[100dvw] h-auto  border-b-1 border-white/30 ">
-            <div className="md:py-10 py-4 w-full flex flex-col md:gap-4 gap-2 items-center flex-7 md:px-8 outline-1 outline-white/30 backdrop-blur-3xl ">
+            <div className="md:py-10 py-4 px-2 w-full flex flex-col md:gap-4 gap-2 items-center flex-7 md:px-8 outline-1 outline-white/30 backdrop-blur-3xl ">
               <div
                 className="absolute inset-0 blur-2xl opacity-30 scale-110 "
                 style={{
