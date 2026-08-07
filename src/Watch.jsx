@@ -12,6 +12,7 @@ export default function Watch() {
   const { state } = useLocation();
   const [moviedata, setmoviedata] = useState(null);
   const [setsource, source] = useState(null);
+  const { serverno } = useContext(searchContext);
 
   const [loading, setLoading] = useState(true);
 
@@ -38,14 +39,14 @@ export default function Watch() {
   }, [state?.id]);
 
   return (
-    <section className="w-fit h-fit min-h-screen min-w-full">
+    <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
       <Navbar side={false} />
       {loading ? (
         <WatchSkeleton />
       ) : (
         <>
-          <div className="flex xl:flex-row flex-col w-full h-auto w-[100vw] border-b-1 border-white/30 ">
-            <div className="py-10 flex-7 md:px-8 outline-1 outline-white/30 backdrop-blur-3xl ">
+          <div className="flex xl:flex-row flex-col w-[100dvw] h-auto  border-b-1 border-white/30 ">
+            <div className="md:py-10 py-4 w-full flex flex-col md:gap-4 gap-2 items-center flex-7 md:px-8 outline-1 outline-white/30 backdrop-blur-3xl ">
               <div
                 className="absolute inset-0 blur-2xl opacity-30 scale-110 "
                 style={{
@@ -55,6 +56,9 @@ export default function Watch() {
                 }}
               ></div>
               {state && <Screen id={state.id} source={moviedata?.embed_imdb} />}
+              <h1 className=" text-sm md:text-xl font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
+                Server {serverno}
+              </h1>
             </div>
             {moviedata && <Data moviedata={moviedata} setsource={setsource} />}
           </div>

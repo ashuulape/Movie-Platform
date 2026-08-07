@@ -4,9 +4,9 @@ const Bottom = ({ moviedata }) => {
   console.log(moviedata);
   return (
     <section>
-      <div className="flex h-fit gap-10  ">
+      <div className="flex md:flex-row flex-col h-fit w-[100dvw] gap-5 md:gap-10  ">
         <div className="flex-4 outline-1 outline-white/30  px-10 py-12">
-          <div className="aspect-video w-full ">
+          <div className="aspect-video w-full flex gap-4 flex-col items-center ">
             <h1 className="font-bold text-2xl">Trailer:</h1>
             <iframe
               className="w-full h-full rounded"

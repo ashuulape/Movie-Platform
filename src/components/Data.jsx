@@ -17,10 +17,10 @@ const data = ({ moviedata, setsource }) => {
   const genres = moviedata?.genres || [];
 
   return (
-    <section className=" py-12 flex flex-col gap-10 px-8">
-      <div className="outline-1 flex h-fit flex-row gap-4 overflow-hidden outline-white/30 w-full rounded-2xl">
+    <section className="py-6 md:py-12 flex flex-col gap-10 px-6 md:px-8">
+      <div className="outline-1 flex h-fit flex-row gap-4 overflow-hidden outline-white/30 w-full rounded-sm md:rounded-2xl">
         <img
-          className="rounded-lg 2xl:h-70 h-90 px-30 xl:px-0"
+          className="rounded-lg 2xl:h-70 h-90  xl:px-0"
           src={`https://image.tmdb.org/t/p/w200${moviedata?.poster}`}
           alt=""
         />
@@ -41,7 +41,7 @@ const data = ({ moviedata, setsource }) => {
           })}
         </div>
       </div>
-      <div className="outline-1 px-6 outline-white/30 w-auto  h-fit rounded-2xl bg-black/20  py-10 flex justify-center gap-5">
+      <div className="outline-1 px-6 outline-white/30 w-auto  h-fit rounded-sm md:rounded-2xl bg-black/20 py-4 md:py-10 flex justify-center gap-5">
         <div className="w-auto  flex gap-4 flex-col">
           <h1 className="text-2xl font-semibold">{moviedata?.title}</h1>
           <div className="w-fit px-4 py-1  bg-amber-600  py-1 rounded-2xl flex items-center font-bold gap-2">

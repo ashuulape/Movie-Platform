@@ -1,4 +1,12 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap');
+
+@theme {
+  --font-bebas: "Bebas Neue", cursive;
+  --font-oswald: "Oswald", sans-serif;
+  --font-roboto: "Roboto Condensed", sans-serif;
+  --font-smooch: "Smooch Sans", sans-serif;
+}
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
