@@ -68,6 +68,9 @@ export const Sidebar = () => {
           );
         })}
       </div>
+      <h1 className="absolute bottom-1/30  text-center font-semibold ">
+        Created for fun by Ashutosh
+      </h1>
     </section>
   );
 };

@@ -17,6 +17,7 @@ export const Card = ({ data }) => {
 
   const handleroute = (id, b) => {
     navigate(`/watch/${b}`, { state: { id } });
+    window.scrollTo(0, 0);
   };
 
   return (
