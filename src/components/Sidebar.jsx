@@ -24,8 +24,13 @@ export const SidebarBtn = () => {
 };
 
 export const Sidebar = () => {
-  const { SidebarOpen, setSidebarOpen, setmovielistno, movielistno } =
-    useContext(dataContext);
+  const {
+    SidebarOpen,
+    setSidebarOpen,
+    setmovielistno,
+    movielistno,
+    setpageno,
+  } = useContext(dataContext);
   const discover = [
     { text: "Now Playing", no: 0 },
     { text: "Popular", no: 1 },
@@ -51,9 +56,12 @@ export const Sidebar = () => {
           return (
             <h1
               onClick={() => {
-                setmovielistno(e?.no);
+                setpageno(1);
+                if (movielistno !== e.no) {
+                  setmovielistno(e?.no);
+                }
               }}
-              className="flex items-center justify-end text-sm w-full text-end h-15 font-semibold uppercase px-4 py-2 bg-black/30 pointer-events-auto "
+              className={`${movielistno === e?.no ? " flex  items-center justify-end text-sm w-full text-end h-15 font-semibold uppercase px-4 py-2 bg-white/90 text-black pointer-events-auto" : " flex  hover:bg-[#f1f1f1] hover:text-black items-center justify-start text-sm w-full text-end h-15 font-semibold uppercase px-4 py-2 bg-black/30 pointer-events-auto"} `}
             >
               {e?.text}
             </h1>

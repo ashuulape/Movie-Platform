@@ -34,14 +34,14 @@ const Navbar = ({ side }) => {
         {side && <SidebarBtn />}
         <div
           onClick={() => navigate("/")}
-          className="flex  h-full items-center justify-center border-r-1  border-white/30"
+          className="flex sm:px-0 px-4  h-full items-center justify-center border-r-1  border-white/30"
         >
           <img
             className="md:h-10 h-8 rotate-z-180 "
             src="https://img.icons8.com/?size=200&id=37326&format=png&color=d02525"
             alt=""
           />
-          <h2 className="md:text-2xl text-sm md:px-2 px-0 h-fit w-fit font-semibold tracking-tighter font-roboto pointer-events-none">
+          <h2 className="sm:block hidden  md:text-2xl text-sm sm:px-2 px-4 h-fit w-fit font-semibold tracking-tighter font-roboto pointer-events-none">
             FreeTube
           </h2>
         </div>

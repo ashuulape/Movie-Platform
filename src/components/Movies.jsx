@@ -74,13 +74,13 @@ const Movies = () => {
   }
 
   return (
-    <div className="w-fit">
-      <div className="w-full py-8 h-fit flex flex-wrap gap-10">
+    <div className="w-full flex flex-col pb-10 items-center ">
+      <div className="w-[90%] py-8 h-fit flex flex-wrap gap-10">
         {moviedata.map((e, key) => {
           return <Card key={key} data={e} />;
         })}
       </div>
-      <div className="w-full flex gap-10 justify-center text-sm sm:text-xl font-bold">
+      <div className="  flex gap-10 justify-center text-sm sm:text-xl font-bold">
         <button
           onClick={() => setpageno((prev) => Math.max(1, prev - 1))}
           disabled={pageno === 1}
