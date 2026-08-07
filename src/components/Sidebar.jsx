@@ -60,15 +60,16 @@ export const Sidebar = () => {
                 if (movielistno !== e.no) {
                   setmovielistno(e?.no);
                 }
+                setSidebarOpen(false);
               }}
-              className={`${movielistno === e?.no ? " flex  items-center justify-end text-sm w-full text-end h-15 font-semibold uppercase px-4 py-2 bg-white/90 text-black pointer-events-auto" : " flex  hover:bg-[#f1f1f1] hover:text-black items-center justify-start text-sm w-full text-end h-15 font-semibold uppercase px-4 py-2 bg-black/30 pointer-events-auto"} `}
+              className={`${movielistno === e?.no ? " flex  items-center justify-end text-sm w-full text-end h-15 font-semibold uppercase px-4 py-2 bg-white/90 text-black pointer-events-auto" : " flex  hover:bg-[#f1f1f1]/30 hover:text-black items-center justify-start text-sm w-full text-end h-15 font-semibold uppercase px-4 py-2 bg-black/30 pointer-events-auto"} `}
             >
               {e?.text}
             </h1>
           );
         })}
       </div>
-      <h1 className="absolute bottom-1/30  text-center font-semibold ">
+      <h1 className="absolute bottom-1/20 w-full text-center font-semibold ">
         Created for fun by Ashutosh
       </h1>
     </section>

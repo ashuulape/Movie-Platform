@@ -69,7 +69,7 @@ const Navbar = ({ side }) => {
       <div className="h-full py-4 border-l-1 border-white/30">
         <a target="blank" href="https://github.com/ashuulape">
           <img
-            className="h-full px-2"
+            className="h-full px-4"
             src="https://img.icons8.com/?size=150&id=zuHqpgzrusU5&format=png&color=f1f1f1"
             alt="github"
           />
