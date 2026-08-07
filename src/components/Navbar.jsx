@@ -38,7 +38,7 @@ const Navbar = ({ side }) => {
         >
           <img
             className="md:h-10 h-8 rotate-z-180 "
-            src="https://img.icons8.com/?size=200&id=37326&format=png&color=f1f1f1"
+            src="https://img.icons8.com/?size=200&id=37326&format=png&color=d02525"
             alt=""
           />
           <h2 className="md:text-2xl text-sm md:px-2 px-0 h-fit w-fit font-semibold tracking-tighter font-roboto pointer-events-none">
