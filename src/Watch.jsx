@@ -65,6 +65,11 @@ export default function Watch() {
                 <h1 className=" text-sm md:text-xl font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
                   Server {serverno}
                 </h1>
+                <h2 className="text-red-700 font-semibold text-[10px] md:text-lg">
+                  <span className="font-bold">NOTE : </span>
+                  Switch servers if the video won't play or the quality isn't
+                  good enough
+                </h2>
               </div>
             )}
             {moviedata && (

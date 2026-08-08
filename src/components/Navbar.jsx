@@ -13,6 +13,7 @@ const Navbar = ({ side }) => {
   const { search, setsearch } = useContext(searchContext);
 
   async function fetchdata(search) {
+    setmoviedata(null);
     navigate("/");
     setLoading(true);
     const res = await axios.get(

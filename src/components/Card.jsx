@@ -31,11 +31,13 @@ export const Card = ({ data }) => {
         {Math.floor(vote_average * 10) / 10}
         <span className="text-[10px] text-white/60 ">/10</span>
       </span>
-      <img
-        className="w-full rounded-lg hover:scale-90 transition-transform duration-200 "
-        src={`https://image.tmdb.org/t/p/w400${poster_path}`}
-        alt=""
-      ></img>
+      <div className=" w-full aspect-[19/6] rounded-lg hover:scale-90 transition-transform duration-200">
+        <img
+          className="w-full  "
+          src={`https://image.tmdb.org/t/p/w400${poster_path}`}
+          alt=""
+        ></img>
+      </div>
       <h1 className="text-wrap  w-full text-start font-bold pt-2">
         {original_title}
       </h1>
