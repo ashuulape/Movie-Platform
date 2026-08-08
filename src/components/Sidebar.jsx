@@ -70,7 +70,7 @@ export const Sidebar = () => {
         })}
       </div>
       <h1 className="absolute bottom-1/20 w-full text-center font-semibold ">
-        Created for fun by Ashutosh
+        Created for fun
       </h1>
     </section>
   );
