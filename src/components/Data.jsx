@@ -65,7 +65,7 @@ const data = ({ moviedata, setsource, isReleased }) => {
         <div className="w-auto  flex gap-4 flex-col">
           {!isReleased && (
             <h1 className=" text-2xl text-red-600 font-bold">
-              !{moviedata?.title} is not Released yet!
+              !{moviedata?.title} is not Released yet! or not availabe
             </h1>
           )}
           <h1 className="text-2xl font-semibold">{moviedata?.title}</h1>

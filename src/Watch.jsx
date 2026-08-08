@@ -38,7 +38,10 @@ export default function Watch() {
     fetchdata();
   }, [state?.id]);
 
-  const isReleased = moviedata?.status == "Released";
+  const d = new Date();
+  const formatted = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+  const isReleased = formatted > moviedata?.release_date;
 
   return (
     <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
