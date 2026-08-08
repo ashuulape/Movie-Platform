@@ -38,32 +38,45 @@ export default function Watch() {
     fetchdata();
   }, [state?.id]);
 
+  const isReleased = moviedata?.status == "Released";
+
   return (
     <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
       <Navbar side={false} />
+
       {loading ? (
         <WatchSkeleton />
       ) : (
         <>
           <div className="flex xl:flex-row flex-col w-[100dvw] h-auto  border-b-1 border-white/30 ">
-            <div className="md:py-10 py-4 px-2 w-full flex flex-col md:gap-4 gap-2 items-center flex-7 md:px-8 outline-1 outline-white/30 backdrop-blur-3xl ">
-              <div
-                className="absolute inset-0 blur-2xl opacity-30 scale-110 "
-                style={{
-                  backgroundImage: `url(${moviedata?.backdrops[0]})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              ></div>
-              {state && <Screen id={state.id} source={moviedata?.embed_imdb} />}
-              <h1 className=" text-sm md:text-xl font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
-                Server {serverno}
-              </h1>
-            </div>
-            {moviedata && <Data moviedata={moviedata} setsource={setsource} />}
+            {isReleased && (
+              <div className="md:py-10 py-4 px-2 w-full flex flex-col md:gap-4 gap-2 items-center flex-7 md:px-8 outline-1 outline-white/30 backdrop-blur-3xl ">
+                <div
+                  className="absolute inset-0 blur-2xl opacity-30 scale-110 "
+                  style={{
+                    backgroundImage: `url(${moviedata?.backdrops[0]})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                ></div>
+                {state && (
+                  <Screen id={state.id} source={moviedata?.embed_imdb} />
+                )}
+                <h1 className=" text-sm md:text-xl font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
+                  Server {serverno}
+                </h1>
+              </div>
+            )}
+            {moviedata && (
+              <Data
+                moviedata={moviedata}
+                setsource={setsource}
+                isReleased={isReleased}
+              />
+            )}
           </div>
           <div className="w-full flex gap-4"></div>
-          {moviedata && <Bottom moviedata={moviedata} />}
+          {moviedata && isReleased && <Bottom moviedata={moviedata} />}
         </>
       )}
     </section>
