@@ -50,8 +50,8 @@ const data = ({ moviedata, setsource, isReleased }) => {
                   onClick={() => setserverno(e)}
                   className={
                     serverno === e
-                      ? `flex-1 text-black text-lg font-semibold bg-[#f1f1f1] `
-                      : `flex-1 text-lg font-semibold bg-[#222222] `
+                      ? `flex-1 text-black text-lg font-semibold bg-[#f1f1f1] pointer-events-auto`
+                      : `flex-1 text-lg font-semibold bg-[#222222] pointer-events-auto `
                   }
                 >
                   Server {e}
