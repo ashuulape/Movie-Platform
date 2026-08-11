@@ -16,7 +16,7 @@ export const Card = ({ data }) => {
   useEffect(() => {}, [data]);
 
   const handleroute = (id, b) => {
-    navigate(`/watch/${b}`, { state: { id } });
+    navigate(`/watch/${b}/${id}`, { state: { id } });
     window.scrollTo(0, 0);
   };
 

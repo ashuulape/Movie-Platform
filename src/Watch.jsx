@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Data from "./components/Data";
 import axios from "axios";
@@ -9,12 +9,36 @@ import WatchSkeleton from "./components/WatchSkeleton";
 import { searchContext } from "./Context/MovieSearchcontext";
 
 export default function Watch() {
+  const [movieid, setmovieid] = useState(null);
+
+  const { title, id } = useParams();
+  console.log(id);
+
+  const navigate = useNavigate();
   const { state } = useLocation();
   const [moviedata, setmoviedata] = useState(null);
   const [setsource, source] = useState(null);
   const { serverno } = useContext(searchContext);
 
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND}/api/movies/${id}`,
+        );
+        setmoviedata(res?.data);
+      } catch (err) {
+        console.error("Failed to fetch movie data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchdata();
+  }, []);
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -62,9 +86,13 @@ export default function Watch() {
                     backgroundPosition: "center",
                   }}
                 ></div>
-                {state && (
-                  <Screen id={state.id} source={moviedata?.embed_imdb} />
-                )}
+
+                <Screen
+                  stateid={state?.id}
+                  id={id}
+                  source={moviedata?.embed_imdb}
+                />
+
                 <h1 className=" text-sm md:text-xl font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
                   Server {serverno}
                 </h1>
@@ -91,14 +119,14 @@ export default function Watch() {
   );
 }
 
-export const Screen = ({ id, source }) => {
+export const Screen = ({ id, stateid, source }) => {
   const { serverno } = useContext(searchContext);
-
+  const movieid = stateid || id;
   if (serverno === 1) {
     return (
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_SERVER_1}${id}`}
+        src={`${import.meta.env.VITE_SERVER_1}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>
@@ -108,7 +136,7 @@ export const Screen = ({ id, source }) => {
     return (
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_SERVER_2}${id}`}
+        src={`${import.meta.env.VITE_SERVER_2}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>
@@ -118,7 +146,7 @@ export const Screen = ({ id, source }) => {
     return (
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_SERVER_3}${id}`}
+        src={`${import.meta.env.VITE_SERVER_3}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>
@@ -128,7 +156,7 @@ export const Screen = ({ id, source }) => {
     return (
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_SERVER_4}${id}`}
+        src={`${import.meta.env.VITE_SERVER_4}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>
@@ -138,7 +166,7 @@ export const Screen = ({ id, source }) => {
     return (
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_SERVER_5}${id}`}
+        src={`${import.meta.env.VITE_SERVER_5}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>

@@ -58,7 +58,6 @@ const Movies = () => {
       try {
         const { data } = await axios.request(options[movielistno]);
         setmoviedata(data?.results);
-        console.log(data?.results);
       } catch (error) {
         console.error("Error fetching movies:", error);
       } finally {
