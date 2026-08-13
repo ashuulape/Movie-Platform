@@ -40,6 +40,8 @@ export default function Watch() {
     fetchdata();
   }, []);
 
+  document.title = `Watch : ${moviedata?.title || ""}`;
+
   useEffect(() => {
     const fetchdata = async () => {
       if (!state?.id) {
@@ -98,8 +100,8 @@ export default function Watch() {
                 </h1>
                 <h2 className="text-red-700 font-semibold text-[10px] md:text-lg">
                   <span className="font-bold">NOTE : </span>
-                  Switch servers if the video won't play or the quality isn't
-                  good enough
+                  Player contains Ads — try using an Adblocker or Brave Browser
+                  for an Ad-free experience
                 </h2>
               </div>
             )}

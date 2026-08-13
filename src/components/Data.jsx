@@ -1,11 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import { dataContext } from "../Context/Moviedatacontext";
 import { searchContext } from "../Context/MovieSearchcontext";
+import { useSearchParams } from "react-router-dom";
 
 const data = ({ moviedata, setsource, isReleased }) => {
   const { serverno, setserverno } = useContext(searchContext);
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const servers = [1, 2, 3, 4, 5];
+  useEffect(() => {
+    setSearchParams({ s: serverno });
+  }, [serverno]);
 
   useEffect(() => {
     if (moviedata?.embed_imdb && typeof setsource === "function") {

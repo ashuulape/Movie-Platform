@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 export const searchContext = createContext();
 const MovieSearchcontext = ({ children }) => {
