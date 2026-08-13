@@ -31,7 +31,7 @@ export const Card = ({ data }) => {
         {Math.floor(vote_average * 10) / 10}
         <span className="text-[10px] text-white/60 ">/10</span>
       </span>
-      <div className=" w-full aspect-[19/6] rounded-lg hover:scale-90 transition-transform duration-200">
+      <div className=" w-full aspect-2/3 min-h-fit hover:rounded-sm overflow-hidden hover:scale-90 transition-transform duration-200">
         <img
           className="w-full  "
           src={`https://image.tmdb.org/t/p/w400${poster_path}`}
