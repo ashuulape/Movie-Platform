@@ -10,10 +10,7 @@ import { searchContext } from "./Context/MovieSearchcontext";
 
 export default function Watch() {
   const [movieid, setmovieid] = useState(null);
-
-  const { title, id } = useParams();
-  console.log(id);
-
+  const { id } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
   const [moviedata, setmoviedata] = useState(null);
@@ -22,36 +19,14 @@ export default function Watch() {
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchdata = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND}/api/movies/${id}`,
-        );
-        setmoviedata(res?.data);
-      } catch (err) {
-        console.error("Failed to fetch movie data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchdata();
-  }, []);
-
   document.title = `Watch : ${moviedata?.title || ""}`;
 
   useEffect(() => {
     const fetchdata = async () => {
-      if (!state?.id) {
-        setLoading(false);
-        return;
-      }
       setLoading(true);
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND}/api/movies/${state.id}`,
+          `${import.meta.env.VITE_BACKEND}/api/movies/${state?.id || id}`,
         );
         setmoviedata(res?.data);
       } catch (err) {
@@ -62,7 +37,7 @@ export default function Watch() {
     };
 
     fetchdata();
-  }, [state?.id]);
+  }, [state?.id, id]);
 
   const d = new Date();
   const formatted = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;

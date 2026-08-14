@@ -1,7 +1,6 @@
 import React from "react";
 
 const Bottom = ({ moviedata }) => {
-  console.log(moviedata);
   return (
     <section>
       <div className="flex xl:flex-row flex-col h-fit w-[100dvw] gap-5 md:gap-10  ">
