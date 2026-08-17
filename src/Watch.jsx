@@ -44,6 +44,14 @@ export default function Watch() {
 
   const isReleased = formatted > moviedata?.release_date;
 
+  function handletogether(id, title) {
+    const roomId = id * 2;
+
+    navigate(`/theater/${title}/${id}/${roomId}`, {
+      state: { id: id, roomId: roomId, title: title },
+    });
+  }
+
   return (
     <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
       <Navbar side={false} />
@@ -64,12 +72,17 @@ export default function Watch() {
                   }}
                 ></div>
 
-                <Screen
+                {/* <Screen
                   stateid={state?.id}
                   id={id}
                   source={moviedata?.embed_imdb}
-                />
-
+                /> */}
+                <button
+                  onClick={() => handletogether(id, moviedata?.title)}
+                  className="w-fit h-fit px-8 bg-white text-black font-semibold my-4 rounded-sm pointer-events-auto relative "
+                >
+                  Watch Together
+                </button>
                 <h1 className=" text-sm md:text-xl font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
                   Server {serverno}
                 </h1>
@@ -96,7 +109,7 @@ export default function Watch() {
   );
 }
 
-export const Screen = ({ id, stateid, source }) => {
+export const Screen = ({ id, stateid }) => {
   const { serverno } = useContext(searchContext);
   const movieid = stateid || id;
   if (serverno === 1) {
