@@ -72,11 +72,11 @@ export default function Watch() {
                   }}
                 ></div>
 
-                {/* <Screen
+                <Screen
                   stateid={state?.id}
                   id={id}
                   source={moviedata?.embed_imdb}
-                /> */}
+                />
                 <button
                   onClick={() => handletogether(id, moviedata?.title)}
                   className="w-fit h-fit px-8 bg-white text-black font-semibold my-4 rounded-sm pointer-events-auto relative "
