@@ -77,12 +77,12 @@ export default function Watch() {
                   id={id}
                   source={moviedata?.embed_imdb}
                 />
-                <button
+                {/* <button
                   onClick={() => handletogether(id, moviedata?.title)}
                   className="w-fit h-fit px-8 bg-white text-black font-semibold my-4 rounded-sm pointer-events-auto relative "
                 >
                   Watch Together
-                </button>
+                </button> */}
                 <h1 className=" text-sm md:text-xl font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
                   Server {serverno}
                 </h1>
