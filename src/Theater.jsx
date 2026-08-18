@@ -380,7 +380,7 @@ export default function Theater() {
   // Route params — id is the movie TMDB id, roomId is the watch-party room code
   const { name: movieTitle, id: movieId, roomId: routeRoomId } = useParams();
   const { name, id } = useParams();
-  console.log(useParams());
+
   const location = useLocation();
   const navigate = useNavigate();
 

@@ -24,7 +24,7 @@ const Navbar = ({ side }) => {
         },
       },
     );
-    console.log(res.data);
+
     setmoviedata(res?.data?.results);
     setLoading(false);
   }
