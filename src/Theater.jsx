@@ -2,6 +2,7 @@ import React, { use, useEffect, useRef, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import { Screen } from "./Watch";
+import { motion } from "motion/react";
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 const MicIcon = () => (
@@ -306,7 +307,7 @@ const VideoPlayer = ({
   }, [stream]);
 
   return (
-    <div className="relative flex-shrink-0 w-40 sm:w-44 aspect-video rounded-xl overflow-hidden bg-neutral-900 border border-white/10 shadow-lg group">
+    <div className="relative flex-shrink-0 min-w-[35vw] w-[50vw] flex-1 max-w-full md:flex-1 md:w-[15vw] md:min-w-[10vw] sm:max-w-[30vw] aspect-video rounded-xl overflow-hidden bg-neutral-900 border border-white/10 shadow-lg group">
       {videoEnabled && stream ? (
         <video
           ref={videoRef}
@@ -374,6 +375,7 @@ const LiveBroadcastViewer = ({ stream }) => {
 
 // ─── Main Theater Component ───────────────────────────────────────────────────
 export default function Theater() {
+  const mainwindow = useRef();
   document.title = `Watch Together`;
   // Route params — id is the movie TMDB id, roomId is the watch-party room code
   const { name: movieTitle, id: movieId, roomId: routeRoomId } = useParams();
@@ -1146,7 +1148,7 @@ export default function Theater() {
         /* ═══════════════ IN-CALL ROOM ═══════════════ */
         <div className="flex flex-col h-screen overflow-hidden">
           {/* ── HEADER ── */}
-          <header className="flex-shrink-0 gap-4 w-full bg-neutral-900/95 backdrop-blur-xl border-b border-white/10 px-3 py-4 flex flex-col items-center justify-between  z-30">
+          <header className="flex-shrink-0 gap-4 w-full bg-neutral-900/95 backdrop-blur-xl border-b border-white/10 px-1 md:px-3 py-4 flex flex-col items-center justify-between  z-30">
             {/* left */}
             {window.innerWidth < 768 && (
               <div
@@ -1177,7 +1179,7 @@ export default function Theater() {
                 {/* host / live badge */}
 
                 {/* room code */}
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm bg-neutral-800/80 border border-neutral-700/60 text-xs font-mono text-neutral-300">
+                <div className="flex items-center gap-1.5 px-1 md:px-2.5 py-1.5 rounded-sm bg-neutral-800/80 border border-neutral-700/60 text-xs font-mono text-neutral-300">
                   Room:&nbsp;<strong className="text-white">{roomId}</strong>
                   <button
                     onClick={handleCopyCode}
@@ -1239,10 +1241,13 @@ export default function Theater() {
           {/* ── URL CHANGE BANNER ── */}
 
           {/* ── MAIN WORKSPACE ── */}
-          <div className="flex-1 relative flex overflow-hidden">
+          <div
+            ref={mainwindow}
+            className="flex-1 relative flex overflow-hidden"
+          >
             {/* Big screen */}
             <div
-              className={`flex-1  flex flex-col p-2 sm:py-4 overflow-hidden items-center justify-center bg-[#0a0a0a] ${isChatOpen ? "hidden xl:flex" : "flex"}`}
+              className={`flex-1  flex flex-col p-2 sm:py-4 overflow-hidden items-center justify-start bg-[#0a0a0a] ${isChatOpen ? "hidden xl:flex" : "flex"}`}
             >
               <div
                 className={`relative max-w-full min-w-[90vw] w-fit h-fit py-40 bg-black rounded-2xl overflow-hidden border border-neutral-800 shadow-2xl flex items-center justify-center aspect-video`}
@@ -1299,7 +1304,7 @@ export default function Theater() {
 
             {/* ── Chat Drawer ── */}
             {isChatOpen && (
-              <aside className="w-full xl:w-80 h-full flex-shrink-0 bg-neutral-900/95 backdrop-blur-2xl border-l border-neutral-800 flex flex-col shadow-2xl z-20">
+              <aside className="w-full pb-[14vh] md:pb-0 xl:w-80 h-full flex-shrink-0 bg-neutral-900/95 backdrop-blur-2xl border-l border-neutral-800 flex flex-col shadow-2xl z-20">
                 <div className="px-4 py-3 border-b border-neutral-800 flex items-center justify-between">
                   <h3 className="text-sm font-bold text-white flex items-center gap-2">
                     <MessageIcon /> Watch Party Chat
@@ -1371,7 +1376,12 @@ export default function Theater() {
 
           {/* ── Floating webcam dock ── */}
           {showWebcams && inCall && (
-            <div className="fixed bottom-20  left-4 z-30 bg-neutral-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-2.5 flex flex-col gap-2 w-fit">
+            <motion.div
+              drag
+              dragConstraints={mainwindow}
+              dragElastic={0.2}
+              className="fixed bottom-20   left-4 z-30 bg-neutral-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-1 md:p-2.5 flex flex-col gap-2  max-w-full "
+            >
               <div className="flex items-center justify-between border-b border-neutral-800 pb-2 ">
                 <span className="text-xs font-bold text-neutral-300">
                   Participants ({remotePeers.length + 1})
@@ -1383,7 +1393,7 @@ export default function Theater() {
                   <XIcon />
                 </button>
               </div>
-              <div className="flex gap-2  pb-1">
+              <div className="flex h-fit flex-row flex-wrap overflow-hidden gap-2  pb-1">
                 <VideoPlayer
                   stream={localStream}
                   isLocal
@@ -1402,7 +1412,7 @@ export default function Theater() {
                   />
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* ── Floating controls dock ── */}
