@@ -58,6 +58,7 @@ const Movies = () => {
       try {
         const { data } = await axios.request(options[movielistno]);
         setmoviedata(data?.results);
+        console.log(data?.results);
       } catch (error) {
         console.error("Error fetching movies:", error);
       } finally {
@@ -73,8 +74,8 @@ const Movies = () => {
   }
 
   return (
-    <div className="w-full flex flex-col pb-10 items-center ">
-      <div className="w-[90%] py-8 h-fit flex flex-wrap gap-10">
+    <div className="w-fit flex flex-col pb-10 items-center ">
+      <div className="w-[90%] py-8 h-fit flex flex-wrap gap-4 md:gap-10">
         {moviedata.map((e, key) => {
           return <Card key={key} data={e} />;
         })}

@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import { Sidebar } from "./components/Sidebar";
 import { dataContext } from "./Context/Moviedatacontext";
 const Home = () => {
+  document.title = `FreeTube : Free movies for everyone`;
   const head = ["Now playing ", "popular", "top rating", "upcoming"];
   const { movielistno } = useContext(dataContext);
   return (

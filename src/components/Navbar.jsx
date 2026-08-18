@@ -30,7 +30,7 @@ const Navbar = ({ side }) => {
   }
 
   return (
-    <section className="w-[100dvw] sticky z-10 top-0 h-15 md:h-[8dvh] bg-[#0f0f0f]/20 backdrop-blur-3xl flex justify-between   sm:px-10 outline-white/30 outline-1">
+    <section className="w-full sticky right-0 left-0 z-10 top-0 h-15 md:h-[8dvh] bg-[#0f0f0f]/20 backdrop-blur-3xl flex justify-between   sm:px-10 outline-white/30 outline-1">
       <div className="flex gap-0 sm:gap-4">
         {side && <SidebarBtn />}
         <div

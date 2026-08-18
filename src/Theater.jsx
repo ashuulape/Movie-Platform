@@ -374,6 +374,7 @@ const LiveBroadcastViewer = ({ stream }) => {
 
 // ─── Main Theater Component ───────────────────────────────────────────────────
 export default function Theater() {
+  document.title = `Watch Together`;
   // Route params — id is the movie TMDB id, roomId is the watch-party room code
   const { name: movieTitle, id: movieId, roomId: routeRoomId } = useParams();
   const { name, id } = useParams();
