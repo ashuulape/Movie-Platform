@@ -209,3 +209,7 @@ app.get('/api/movies/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+app.get('/',(req,res)=>{
+  res.status(200).json({message:"server is fine"})
+})
