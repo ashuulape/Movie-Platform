@@ -1161,7 +1161,10 @@ export default function Theater() {
                   alt=""
                 />
                 <h2 className="relative md:text-2xl text-sm  h-fit w-fit font-semibold tracking-widest font-roboto pointer-events-none">
-                  Theater
+                  Theater{" "}
+                  <span className="text-[8px] font-thin tracking-wide">
+                    BETA
+                  </span>
                 </h2>
               </div>
             )}
@@ -1200,8 +1203,11 @@ export default function Theater() {
                     src="https://img.icons8.com/?size=200&id=37326&format=png&color=d02525"
                     alt=""
                   />
-                  <h2 className="sm:block hidden  md:text-2xl text-sm sm:px-2 px-4 h-fit w-fit font-semibold tracking-[10px] uppercase font-roboto pointer-events-none">
-                    Theater
+                  <h2 className="sm:block hidden  md:text-2xl text-sm sm:pl-2 px-4 h-fit w-fit font-semibold tracking-[10px] uppercase font-roboto pointer-events-none">
+                    Theater{" "}
+                    <span className="text-xs font-thin tracking-widest -ml-4 ">
+                      Beta
+                    </span>
                   </h2>
                 </div>
               )}
