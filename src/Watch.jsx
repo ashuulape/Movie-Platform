@@ -48,7 +48,6 @@ export default function Watch() {
           `${import.meta.env.VITE_BACKEND}/api/${category}/${state?.id || id}`,
         );
         setmoviedata(res?.data);
-        console.log(res?.data);
       } catch (err) {
         console.error("Failed to fetch movie data:", err);
       } finally {
@@ -104,12 +103,14 @@ export default function Watch() {
                   />
                 )}
                 <div className="flex items-center gap-10">
-                  <button
-                    onClick={() => handletogether(id, moviedata?.title)}
-                    className="w-fit h-fit px-8 py-2 bg-white text-black font-semibold items-center gap-2 my-4 flex  rounded-sm pointer-events-auto relative "
-                  >
-                    Watch Together <UsersIcon />
-                  </button>
+                  {!istv && (
+                    <button
+                      onClick={() => handletogether(id, moviedata?.title)}
+                      className="w-fit h-fit px-8 py-2 bg-white text-black font-semibold items-center gap-2 my-4 flex  rounded-sm pointer-events-auto relative "
+                    >
+                      Watch Together <UsersIcon />
+                    </button>
+                  )}
                   <h1 className=" text-sm md:text-xl h-fit  font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
                     Server {serverno}
                   </h1>

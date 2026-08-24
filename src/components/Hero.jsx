@@ -96,14 +96,16 @@ export const Herocard = ({ data }) => {
     10767: "Talk",
     10768: "War & Politics",
   };
-  const handleroute = (id, b) => {
-    navigate(`/watch/m/${b}/${id}`, { state: { id } });
+  const handleroute = (id, b, category) => {
+    navigate(`/watch/${category}/${b}/${id}`, { state: { id, category } });
     window.scrollTo(0, 0);
   };
 
   return (
     <div
-      onClick={() => handleroute(data?.id, data?.original_title)}
+      onClick={() =>
+        handleroute(data?.id, data?.original_title, data?.media_type)
+      }
       className="w-[100dvw] flex aspect-video shrink-0 bg-cover bg-center"
       style={{
         backgroundImage: `linear-gradient(to right, rgba(0,0,0,0) 50%,rgba(0,0,0,0.5) 60%, rgba(15,15,15,0.9) 80%),url(https://image.tmdb.org/t/p/w1280${

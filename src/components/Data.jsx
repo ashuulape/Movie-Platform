@@ -66,8 +66,8 @@ const data = ({ moviedata, setsource, isReleased }) => {
           </div>
         )}
       </div>
-      <div className=" flex-4 outline-1 px-6 outline-white/30 w-auto  h-fit rounded-sm md:rounded-2xl bg-black/20 py-4 md:py-10 flex justify-center flex-col-reverse 2xl:flex-row gap-5">
-        <div className="w-auto  flex gap-4 flex-col">
+      <div className="  outline-1 px-6 outline-white/30 w-auto min-h-fit max-h-full rounded-sm md:rounded-2xl bg-black/20 py-4 md:py-10 flex justify-center flex-col-reverse 2xl:flex-row gap-5">
+        <div className="w-auto   flex gap-4 flex-col">
           {!isReleased && (
             <h1 className=" text-2xl text-red-600 font-bold">
               !{moviedata?.title} is not Released yet! or not availabe

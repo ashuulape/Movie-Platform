@@ -91,11 +91,7 @@ const Watchtv = () => {
               </div>
             )}
             {moviedata && (
-              <Data
-                moviedata={moviedata}
-                setsource={setsource}
-                isReleased={isReleased}
-              />
+              <Data moviedata={moviedata} isReleased={isReleased} />
             )}
           </div>
           <div className="w-full flex gap-4"></div>
