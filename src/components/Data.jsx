@@ -73,7 +73,9 @@ const data = ({ moviedata, setsource, isReleased }) => {
               !{moviedata?.title} is not Released yet! or not availabe
             </h1>
           )}
-          <h1 className="text-2xl font-semibold">{moviedata?.title}</h1>
+          <h1 className="text-2xl font-semibold">
+            {moviedata?.title || moviedata?.name}
+          </h1>
           <div className="w-fit px-4 py-1  bg-amber-600  py-1 rounded-2xl flex items-center font-bold gap-2">
             {" "}
             <img
@@ -108,7 +110,7 @@ const data = ({ moviedata, setsource, isReleased }) => {
             </span>
             <span>
               <span className="font-semibold"> Release Date :</span>{" "}
-              {moviedata?.release_date}
+              {moviedata?.release_date || moviedata?.first_air_date}
             </span>
             <span>
               <span className="font-semibold"> Runtime :</span>{" "}

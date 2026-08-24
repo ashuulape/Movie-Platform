@@ -1,14 +1,9 @@
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Data from "./components/Data";
-import axios from "axios";
-import Bottom from "./components/Bottom";
-import { dataContext } from "./Context/Moviedatacontext";
 import WatchSkeleton from "./components/WatchSkeleton";
 import { searchContext } from "./Context/MovieSearchcontext";
 
-export default function Watch() {
+const Watchtv = () => {
   const UsersIcon = () => (
     <svg
       width="16"
@@ -26,29 +21,22 @@ export default function Watch() {
       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
   );
-
-  const { id, category } = useParams();
+  const { serverno } = useContext(searchContext);
+  const { id } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [loading, setLoading] = useState(false);
   const [moviedata, setmoviedata] = useState(null);
-  const [setsource, source] = useState(null);
-  const [epNo, setepNo] = useState(1);
-  const [seasonno, setseasonno] = useState(1);
-  const { serverno } = useContext(searchContext);
-
-  const [loading, setLoading] = useState(true);
-
-  document.title = `Watch : ${moviedata?.title || moviedata?.name || ""}`;
+  const [isReleased, setisReleased] = useState(true);
 
   useEffect(() => {
     const fetchdata = async () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND}/api/${category}/${state?.id || id}`,
+          `${import.meta.env.VITE_BACKEND}/api/movie/${state?.id || id}`,
         );
         setmoviedata(res?.data);
-        console.log(res?.data);
       } catch (err) {
         console.error("Failed to fetch movie data:", err);
       } finally {
@@ -58,20 +46,6 @@ export default function Watch() {
 
     fetchdata();
   }, [state?.id, id]);
-
-  const istv = category == "tv" ? true : false;
-  const d = new Date();
-  const formatted = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  const isReleased =
-    category !== "movie" || formatted > moviedata?.release_date;
-
-  function handletogether(id, title) {
-    const roomId = id * 2;
-
-    navigate(`/theater/${title}/${id}/${roomId}`, {
-      state: { id: id, roomId: roomId, title: title },
-    });
-  }
 
   return (
     <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
@@ -93,16 +67,11 @@ export default function Watch() {
                   }}
                 ></div>
 
-                {!istv ? (
-                  <ScreenMovie stateid={state?.id} id={id} />
-                ) : (
-                  <ScreenTv
-                    stateid={state?.id}
-                    id={id}
-                    sno={seasonno}
-                    epno={epNo}
-                  />
-                )}
+                <Screen
+                  stateid={state?.id}
+                  id={id}
+                  source={moviedata?.embed_imdb}
+                />
                 <div className="flex items-center gap-10">
                   <button
                     onClick={() => handletogether(id, moviedata?.title)}
@@ -114,37 +83,6 @@ export default function Watch() {
                     Server {serverno}
                   </h1>
                 </div>
-                {istv && (
-                  <div className="w-full h-fit text-white font-thin relative flex flex-col gap-2">
-                    <h2>Season : {seasonno}</h2>
-                    <div className="flex w-full gap-2 text-white font-bold flex-wrap">
-                      {moviedata?.seasons?.slice(1).map((e, idx) => (
-                        <button
-                          onClick={() => setseasonno(e?.season_number)}
-                          className={` px-2 rounded-sm ${seasonno == e?.season_number ? "bg-[#EDEBEA] text-black" : "bg-[#232323]"}`}
-                          id={idx}
-                        >
-                          {e?.season_number}
-                        </button>
-                      ))}
-                    </div>
-                    <h2>Episode : {epNo}</h2>
-                    <div className="flex w-full h-fit gap-2 text-white font-bold flex-wrap">
-                      {Array.from(
-                        { length: moviedata?.seasons[seasonno]?.episode_count },
-                        (_, idx) => (
-                          <button
-                            className={` px-2 rounded-sm ${epNo == idx + 1 ? "bg-[#EDEBEA] text-black" : "bg-[#232323]"}`}
-                            onClick={() => setepNo(idx + 1)}
-                            key={idx}
-                          >
-                            {idx + 1}
-                          </button>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                )}
                 <h2 className="text-red-700 font-semibold text-[10px] md:text-lg">
                   <span className="font-bold">NOTE : </span>
                   Player contains Ads — try using an Adblocker or Brave Browser
@@ -166,9 +104,11 @@ export default function Watch() {
       )}
     </section>
   );
-}
+};
 
-export const ScreenMovie = ({ id, stateid }) => {
+export default Watchtv;
+
+export const Screen = ({ id, stateid }) => {
   const { serverno } = useContext(searchContext);
   const movieid = stateid || id;
   if (serverno === 1) {
@@ -206,62 +146,6 @@ export const ScreenMovie = ({ id, stateid }) => {
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
         src={`${import.meta.env.VITE_SERVER_4}${movieid}`}
-        frameBorder="0"
-        allowFullScreen={true}
-      ></iframe>
-    );
-  }
-  if (serverno === 5) {
-    return (
-      <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_SERVER_5}${movieid}`}
-        frameBorder="0"
-        allowFullScreen={true}
-      ></iframe>
-    );
-  }
-};
-
-export const ScreenTv = ({ id, stateid, sno, epno }) => {
-  const { serverno } = useContext(searchContext);
-  const movieid = stateid || id;
-
-  if (serverno === 1) {
-    return (
-      <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_TV_SERVER_1}${movieid}/${sno}/${epno}`}
-        frameBorder="0"
-        allowFullScreen={true}
-      ></iframe>
-    );
-  }
-  if (serverno === 2) {
-    return (
-      <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_TV_SERVER_2}${movieid}`}
-        frameBorder="0"
-        allowFullScreen={true}
-      ></iframe>
-    );
-  }
-  if (serverno === 3) {
-    return (
-      <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_TV_SERVER_3}${movieid}`}
-        frameBorder="0"
-        allowFullScreen={true}
-      ></iframe>
-    );
-  }
-  if (serverno === 4) {
-    return (
-      <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_TV_SERVER_4}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>

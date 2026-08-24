@@ -34,7 +34,8 @@ export const Card = ({ data }) => {
 
   const handleroute = (id, b, category) => {
     const cat = category ? "movie" : "tv";
-    navigate(`/watch/${cat}/${b}/${id}`, { state: { id } });
+    navigate(`/watch/${cat}/${b}/${id}`, { state: { id, cat } });
+
     window.scrollTo(0, 0);
   };
 

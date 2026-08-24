@@ -1,7 +1,7 @@
 import React, { use, useEffect, useRef, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
-import { Screen } from "./Watch";
+import { ScreenMovie } from "./Watch";
 import { motion } from "motion/react";
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
@@ -1260,7 +1260,7 @@ export default function Theater() {
               >
                 {isHost ? (
                   <>
-                    <Screen id={id} />
+                    <ScreenMovie id={id} />
                     <div className="absolute top-3 left-3 flex items-center gap-2 px-3 py-1 rounded-lg bg-black/70 backdrop-blur-md border border-white/10 text-xs font-medium text-amber-400 shadow-lg">
                       <span> Host Player</span>
                       {!isBroadcastingMovie && (

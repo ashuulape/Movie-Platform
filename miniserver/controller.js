@@ -33,7 +33,7 @@ async function gettvdata  (req, res){
 
         try {
 
-            const response = await axios.get(`${process.env.SITE_URL}?tmdb_id=${req.params.id}` );
+            const response = await axios.get(`${process.env.SITE_URL}similar?tmdb_id=${req.params.id}` );
             res.json(response.data);
         } catch (err) {
             console.error(err.message);
