@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { searchContext } from "../Context/MovieSearchcontext.jsx";
 
 export const Card = ({ data }) => {
   document.me;
@@ -7,6 +8,8 @@ export const Card = ({ data }) => {
   const formatted = now.toISOString().split("T")[0];
   const [ismobile, setismobile] = useState(false);
   const navigate = useNavigate();
+  const { category } = useContext(searchContext);
+
   const {
     original_title,
     poster_path,
@@ -28,7 +31,7 @@ export const Card = ({ data }) => {
   }, []);
 
   const handleroute = (id, b) => {
-    navigate(`/watch/${b}/${id}`, { state: { id } });
+    navigate(`/watch/m/${b}/${id}`, { state: { id } });
     window.scrollTo(0, 0);
   };
 
@@ -99,11 +102,13 @@ export const Card = ({ data }) => {
           {overview.split(" ").slice(0, 20).join(" ")}
           <span className="text-white/50"> Read more...</span>
         </p>
-        <p
-          className={`text-[10px] font-semibold w-fit px-2 flex items-centers   ${isreleased ? "text-green-400 bg-green-400/20 outline-1 outline-green-300/40 rounded-sm" : "text-red-500 bg-red-500/20 outline-1 outline-red-500/40 rounded-sm"}`}
-        >
-          {isreleased ? "• Released" : "• Not Released"}
-        </p>
+        {category && (
+          <p
+            className={`text-[10px] font-semibold w-fit px-2 flex items-centers    ${isreleased ? "text-green-400 bg-green-400/20 outline-1 outline-green-300/40 rounded-sm" : "text-red-500 bg-red-500/20 outline-1 outline-red-500/40 rounded-sm"}`}
+          >
+            {isreleased ? "• Released" : "• Not Released"}
+          </p>
+        )}
       </div>
     </div>
   ) : (
@@ -117,11 +122,13 @@ export const Card = ({ data }) => {
         {Math.floor(vote_average * 10) / 10}
         <span className="text-[10px] text-white/60 ">/10</span>
       </span>
-      <p
-        className={`text-xs w-fit z-4 px-2 flex items-centers absolute top-4 left-2  backdrop-blur-sm  ${isreleased ? "text-green-400 bg-green-400/20 outline-1 outline-green-300/40 rounded-sm" : ""}`}
-      >
-        {isreleased ? "• Released" : "Not Released"}
-      </p>
+      {category && (
+        <p
+          className={`text-xs w-fit z-4 px-2 flex items-centers absolute top-4 left-2  backdrop-blur-sm  ${isreleased ? "text-green-400 bg-green-400/20 outline-1 outline-green-300/40 rounded-sm" : ""}`}
+        >
+          {isreleased ? "• Released" : "Not Released"}
+        </p>
+      )}
       <div className=" w-full aspect-2/3 min-h-fit hover:rounded-sm overflow-hidden hover:scale-90 transition-transform duration-200">
         <img
           className="w-full   "

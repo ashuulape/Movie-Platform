@@ -6,14 +6,14 @@ import HomeSkeleton from "./HomeSkeleton";
 import { searchContext } from "../Context/MovieSearchcontext";
 
 const Movies = () => {
-  const { loading, setLoading } = useContext(searchContext);
+  const { loading, setLoading, category } = useContext(searchContext);
   const { moviedata, setmoviedata, movielistno, pageno, setpageno } =
     useContext(dataContext);
 
   const options = [
     {
       method: "GET",
-      url: "https://api.themoviedb.org/3/movie/now_playing",
+      url: `https://api.themoviedb.org/3/movie/now_playing`,
       params: { language: "en-US", page: pageno },
       headers: {
         accept: "application/json",
@@ -22,7 +22,7 @@ const Movies = () => {
     },
     {
       method: "GET",
-      url: "https://api.themoviedb.org/3/movie/popular",
+      url: `https://api.themoviedb.org/3/${category ? "movie" : "tv"}/popular`,
       params: { language: "en-US", page: pageno },
       headers: {
         accept: "application/json",
@@ -31,7 +31,7 @@ const Movies = () => {
     },
     {
       method: "GET",
-      url: "https://api.themoviedb.org/3/movie/top_rated",
+      url: `https://api.themoviedb.org/3/${category ? "movie" : "tv"}/top_rated`,
       params: { language: "en-US", page: pageno },
       headers: {
         accept: "application/json",
@@ -40,7 +40,7 @@ const Movies = () => {
     },
     {
       method: "GET",
-      url: "https://api.themoviedb.org/3/movie/upcoming",
+      url: `https://api.themoviedb.org/3/${category ? "movie" : "tv"}/upcoming`,
       params: { language: "en-US", page: pageno },
       headers: {
         accept: "application/json",
@@ -66,7 +66,7 @@ const Movies = () => {
       }
     }
     fetchplayingMovies();
-  }, [movielistno, pageno]);
+  }, [movielistno, pageno, category]);
 
   if (loading || !moviedata) {
     return <HomeSkeleton />;

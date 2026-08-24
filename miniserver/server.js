@@ -4,6 +4,7 @@ const axios = require('axios');
 require("dotenv").config();
 const http = require("http");
 const { Server } = require("socket.io");
+const {gettvdata, getmoviedata, getsimilarmovie} = require("./controller");
 
 const app = express();
 
@@ -195,16 +196,14 @@ server.listen(PORT, () => {
 app.use(cors({
   origin: true // change to your frontend's dev URL / deployed URL
 }));
-app.get('/api/movies/:id', async (req, res) => {
-  try {
-    
-    const response = await axios.get(`${process.env.SITE_URL}${req.params.id}` );
-    res.json(response.data);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: 'Failed to fetch movie data' });
-  }
-});
+
+app.get('/api/movie/:id', getmoviedata);
+app.get('/api/movie/similar/:id', getsimilarmovie);
+
+app.get('/api/tv/:id',gettvdata)
+
+
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

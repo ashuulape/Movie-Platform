@@ -6,6 +6,7 @@ const MovieSearchcontext = ({ children }) => {
   const [search, setsearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [serverno, setserverno] = useState(1);
+  const [category, setcategory] = useState(true);
 
   return (
     <searchContext.Provider
@@ -16,6 +17,8 @@ const MovieSearchcontext = ({ children }) => {
         setLoading,
         serverno,
         setserverno,
+        category,
+        setcategory,
       }}
     >
       {children}
