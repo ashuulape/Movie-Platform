@@ -71,7 +71,7 @@ export default function Watch() {
       state: { id: id, roomId: roomId, title: title },
     });
   }
-
+  console.log(moviedata);
   return (
     <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
       <Navbar side={false} />
@@ -119,7 +119,7 @@ export default function Watch() {
                   <div className="w-full h-fit text-white font-thin relative flex flex-col gap-2">
                     <h2>Season : {seasonno}</h2>
                     <div className="flex w-full gap-2 text-white font-bold flex-wrap">
-                      {moviedata?.seasons?.slice(1).map((e, idx) => (
+                      {moviedata?.seasons.map((e, idx) => (
                         <button
                           onClick={() => setseasonno(e?.season_number)}
                           className={` px-2 rounded-sm ${seasonno == e?.season_number ? "bg-[#EDEBEA] text-black" : "bg-[#232323]"}`}
