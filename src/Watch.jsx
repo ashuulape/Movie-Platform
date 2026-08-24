@@ -117,9 +117,9 @@ export default function Watch() {
                 </div>
                 {istv && (
                   <div className="w-full h-fit text-white font-thin relative flex flex-col gap-2">
-                    <h2>Season : {seasonno}</h2>
+                    <h2>Season : {serverno}</h2>
                     <div className="flex w-full gap-2 text-white font-bold flex-wrap">
-                      {moviedata?.seasons.map((e, idx) => (
+                      {moviedata?.seasons?.slice(1).map((e, idx) => (
                         <button
                           onClick={() => setseasonno(e?.season_number)}
                           className={` px-2 rounded-sm ${seasonno == e?.season_number ? "bg-[#EDEBEA] text-black" : "bg-[#232323]"}`}
