@@ -14,11 +14,12 @@ async function gettvdata  (req, res){
         }
 
 }
-async function getmoviedata  (req, res){
+ async function getmoviedata  (req, res){
 
 
         try {
-
+          
+            
             const response = await axios.get(`${process.env.SITE_URL}movie?tmdb_id=${req.params.id}` );
             res.json(response.data);
         } catch (err) {
@@ -27,12 +28,12 @@ async function getmoviedata  (req, res){
         }
 
 }
-async function getsimilarmovie  (req, res){
+ async function getsimilarmovie  (req, res){
 
 
         try {
 
-            const response = await axios.get(`${process.env.SITE_URLsimilar}?tmdb_id=${req.params.id}` );
+            const response = await axios.get(`${process.env.SITE_URL}?tmdb_id=${req.params.id}` );
             res.json(response.data);
         } catch (err) {
             console.error(err.message);
@@ -43,4 +44,4 @@ async function getsimilarmovie  (req, res){
 
 
 
-module.exports = {gettvdata,getmoviedata,getsimilarmovie}
+module.exports={getmoviedata,getsimilarmovie,gettvdata}
