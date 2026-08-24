@@ -100,7 +100,7 @@ export const Herocard = ({ data }) => {
     navigate(`/watch/m/${b}/${id}`, { state: { id } });
     window.scrollTo(0, 0);
   };
-  console.log(data);
+
   return (
     <div
       onClick={() => handleroute(data?.id, data?.original_title)}

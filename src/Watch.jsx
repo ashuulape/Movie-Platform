@@ -44,7 +44,7 @@ export default function Watch() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND}/api/movies/${state?.id || id}`,
+          `${import.meta.env.VITE_BACKEND}/api/movie/${state?.id || id}`,
         );
         setmoviedata(res?.data);
       } catch (err) {

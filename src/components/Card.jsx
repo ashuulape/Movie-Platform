@@ -20,7 +20,9 @@ export const Card = ({ data }) => {
     backdrop_path,
     overview,
     release_date,
+    name,
   } = data;
+  console.log(data);
   const [isreleased, setisreleased] = useState(formatted > release_date);
 
   useEffect(() => {
@@ -30,8 +32,9 @@ export const Card = ({ data }) => {
     return () => window.removeEventListener("resize", checkSize);
   }, []);
 
-  const handleroute = (id, b) => {
-    navigate(`/watch/m/${b}/${id}`, { state: { id } });
+  const handleroute = (id, b, category) => {
+    const cat = category ? "movie" : "tv";
+    navigate(`/watch/${cat}/${b}/${id}`, { state: { id } });
     window.scrollTo(0, 0);
   };
 
@@ -62,7 +65,11 @@ export const Card = ({ data }) => {
       loading="lazy"
       id={key}
       className=" relative px-2 py-4 w-full min-w-full rounded-sm  aspect-video flex flex-row gap-2 flex-1 object-contain   hover:scale-105 transition-transform duration-200  "
-      onClick={() => handleroute(id, original_title)}
+      onClick={() =>
+        category
+          ? handleroute(id, original_title, category)
+          : handleroute(id, name, category)
+      }
       style={{
         backgroundImage: `linear-gradient(to bottom, rgba(15,15,15,0.6) 0%, rgba(15,15,15,1) 80%),url(https://image.tmdb.org/t/p/w400${backdrop_path})`,
         backgroundSize: "100%",
@@ -79,7 +86,7 @@ export const Card = ({ data }) => {
       </div>
       <div className="h-fit flex gap-2 flex-col w-fit flex-6 py-4">
         <h1 className=" md:text-3xl text-xl text-end  text-white font-roboto font-semibold">
-          {original_title}
+          {original_title || name}
         </h1>
         <div className="flex justify-end gap-1  flex-wrap w-full h-fit">
           {genre_ids.slice(0, 3).map((e, idx) => {
@@ -116,7 +123,11 @@ export const Card = ({ data }) => {
       loading="lazy"
       id={key}
       className="max-w-100 relative  w-80 min-w-60 h-fit flex-row flex-1 object-contain  overflow-hidden hover:scale-105 transition-transform duration-200  "
-      onClick={() => handleroute(id, original_title)}
+      onClick={() =>
+        category
+          ? handleroute(id, original_title, category)
+          : handleroute(id, name, category)
+      }
     >
       <span className="text-white absolute z-4 right-1/20 bg-black/40 backdrop-blur-xs top-1/40 outline-1  outline-white/30 px-2  rounded-xl font-bold">
         {Math.floor(vote_average * 10) / 10}
@@ -137,7 +148,7 @@ export const Card = ({ data }) => {
         ></img>
       </div>
       <h1 className="text-wrap  w-full text-start font-bold pt-2">
-        {original_title}
+        {original_title || name}
       </h1>
       <h2 className="text-sm font-semibold text-white/50">{release_date}</h2>
     </div>

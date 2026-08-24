@@ -8,7 +8,8 @@ import { SidebarBtn } from "./Sidebar";
 
 const Navbar = ({ side }) => {
   const navigate = useNavigate();
-  const { loading, setLoading ,setcategory,category } = useContext(searchContext);
+  const { loading, setLoading, setcategory, category } =
+    useContext(searchContext);
   const { setmoviedata } = useContext(dataContext);
   const { search, setsearch } = useContext(searchContext);
 
@@ -17,7 +18,7 @@ const Navbar = ({ side }) => {
     navigate("/");
     setLoading(true);
     const res = await axios.get(
-      `https://api.themoviedb.org/3/search/${category?"movies":"tv"}?query=${search}&page=1`,
+      `https://api.themoviedb.org/3/search/${category ? "movie" : "tv"}?query=${search}&page=1`,
       {
         headers: {
           Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
