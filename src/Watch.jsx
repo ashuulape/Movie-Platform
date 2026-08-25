@@ -33,7 +33,7 @@ export default function Watch() {
   const [moviedata, setmoviedata] = useState(null);
   const [setsource, source] = useState(null);
   const [epNo, setepNo] = useState(1);
-  const [seasonno, setseasonno] = useState(1);
+  const [seasonno, setseasonno] = useState(0);
   const { serverno } = useContext(searchContext);
 
   const [loading, setLoading] = useState(true);
@@ -72,6 +72,8 @@ export default function Watch() {
     });
   }
   console.log(moviedata);
+  // const oneseason = moviedata?.seasons?.length < 2;
+  console.log(moviedata?.seasons);
   return (
     <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
       <Navbar side={false} />
@@ -117,15 +119,14 @@ export default function Watch() {
                 </div>
                 {istv && (
                   <div className="w-full h-fit text-white font-thin relative flex flex-col gap-2">
-                    <h2>Season : {serverno}</h2>
                     <div className="flex w-full gap-2 text-white font-bold flex-wrap">
-                      {moviedata?.seasons?.slice(1).map((e, idx) => (
+                      {moviedata?.seasons?.slice(0).map((e, idx) => (
                         <button
-                          onClick={() => setseasonno(e?.season_number)}
-                          className={` px-2 rounded-sm ${seasonno == e?.season_number ? "bg-[#EDEBEA] text-black" : "bg-[#232323]"}`}
+                          onClick={() => setseasonno(idx)}
+                          className={` px-2 rounded-sm ${seasonno == idx ? "bg-[#EDEBEA] text-black" : "bg-[#232323]"}`}
                           id={idx}
                         >
-                          {e?.season_number}
+                          {e?.season_number == 0 ? e?.name : e?.name}
                         </button>
                       ))}
                     </div>
@@ -242,7 +243,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
     return (
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_TV_SERVER_2}${movieid}`}
+        src={`${import.meta.env.VITE_TV_SERVER_2}${movieid}&s=${sno}&e=${epno}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>
@@ -252,7 +253,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
     return (
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_TV_SERVER_3}${movieid}`}
+        src={`${import.meta.env.VITE_TV_SERVER_3}${movieid}&s=${sno}&e=${epno}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>
@@ -262,7 +263,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
     return (
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_TV_SERVER_4}${movieid}`}
+        src={`${import.meta.env.VITE_TV_SERVER_4}${movieid}/${sno}/${epno}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>
@@ -272,7 +273,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
     return (
       <iframe
         className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_SERVER_5}${movieid}`}
+        src={`${import.meta.env.VITE_SERVER_5}${movieid}&s=${sno}&e=${epno}`}
         frameBorder="0"
         allowFullScreen={true}
       ></iframe>
