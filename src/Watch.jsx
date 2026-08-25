@@ -71,7 +71,7 @@ export default function Watch() {
       state: { id: id, roomId: roomId, title: title },
     });
   }
-  console.log(moviedata);
+
   // const oneseason = moviedata?.seasons?.length < 2;
   console.log(moviedata?.seasons);
   return (
@@ -117,26 +117,36 @@ export default function Watch() {
                     Server {serverno}
                   </h1>
                 </div>
+                <h2 className="text-red-700 font-semibold text-[10px] md:text-lg">
+                  <span className="font-bold">NOTE : </span>
+                  Player contains Ads — try using an Adblocker or Brave Browser
+                  for an Ad-free experience
+                </h2>
                 {istv && (
                   <div className="w-full h-fit text-white font-thin relative flex flex-col gap-2">
+                    <h2 className="font-bold">Seasons :</h2>
                     <div className="flex w-full gap-2 text-white font-bold flex-wrap">
                       {moviedata?.seasons?.slice(0).map((e, idx) => (
                         <button
                           onClick={() => setseasonno(idx)}
-                          className={` px-2 rounded-sm ${seasonno == idx ? "bg-[#EDEBEA] text-black" : "bg-[#232323]"}`}
+                          className={` px-2 rounded-sm ${seasonno == idx ? "bg-[#EDEBEA] text-black" : "bg-[#232323]/30 outline-1 outline-white/10"}`}
                           id={idx}
                         >
-                          {e?.season_number == 0 ? e?.name : e?.name}
+                          {moviedata?.seasons[1]?.name?.startsWith("Season")
+                            ? e?.name
+                            : e?.season_number == 0
+                              ? e?.name
+                              : e?.season_number}
                         </button>
                       ))}
                     </div>
-                    <h2>Episode : {epNo}</h2>
-                    <div className="flex w-full h-fit gap-2 text-white font-bold flex-wrap">
+                    <h2 className="font-bold">Episode : </h2>
+                    <div className="grid grid-cols-6 sm:grid-cols-12 auto-rows-max w-full gap-2 text-white font-bold">
                       {Array.from(
                         { length: moviedata?.seasons[seasonno]?.episode_count },
                         (_, idx) => (
                           <button
-                            className={` px-2 rounded-sm ${epNo == idx + 1 ? "bg-[#EDEBEA] text-black" : "bg-[#232323]"}`}
+                            className={` px-2 rounded-sm ${epNo == idx + 1 ? "bg-[#EDEBEA] text-black" : "bg-[#232323]/30 outline-1 outline-white/10"}`}
                             onClick={() => setepNo(idx + 1)}
                             key={idx}
                           >
@@ -147,11 +157,6 @@ export default function Watch() {
                     </div>
                   </div>
                 )}
-                <h2 className="text-red-700 font-semibold text-[10px] md:text-lg">
-                  <span className="font-bold">NOTE : </span>
-                  Player contains Ads — try using an Adblocker or Brave Browser
-                  for an Ad-free experience
-                </h2>
               </div>
             )}
             {moviedata && (
