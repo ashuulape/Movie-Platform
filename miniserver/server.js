@@ -194,7 +194,7 @@ server.listen(PORT, () => {
 
 
 app.use(cors({
-  origin: true // change to your frontend's dev URL / deployed URL
+  origin: 'https://freetube69.onrender.com/' 
 }));
 
 app.get('/api/movie/:id', getmoviedata);
