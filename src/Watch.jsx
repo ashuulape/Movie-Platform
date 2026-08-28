@@ -1,5 +1,10 @@
 import React, { use, useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Data from "./components/Data";
 import axios from "axios";
@@ -26,7 +31,7 @@ export default function Watch() {
       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
   );
-
+  const [searchParams, setsearchParams] = useSearchParams();
   const { id, category } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -59,6 +64,7 @@ export default function Watch() {
   }, [state?.id, id]);
 
   const istv = category == "tv" ? true : false;
+
   const d = new Date();
   const formatted = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   const isReleased =
@@ -72,8 +78,18 @@ export default function Watch() {
     });
   }
 
-  // const oneseason = moviedata?.seasons?.length < 2;
-  console.log(moviedata?.seasons);
+  useEffect(() => {
+    if (istv) {
+      setsearchParams({ s: seasonno, ep: epNo });
+    }
+  }, [istv, seasonno, epNo]);
+
+  useEffect(() => {
+    const { s, ep } = Object.fromEntries(searchParams);
+    setseasonno(s);
+    setepNo(ep);
+  }, []);
+
   return (
     <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
       <Navbar side={false} />
