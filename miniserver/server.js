@@ -194,7 +194,9 @@ server.listen(PORT, () => {
 
 
 app.use(cors({
-  origin: 'https://freetube69.onrender.com/' 
+  origin: true    ,          // reflects/allows ANY origin dynamically (permissive)
+
+   credentials: true
 }));
 
 app.get('/api/movie/:id', getmoviedata);
