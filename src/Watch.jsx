@@ -68,7 +68,7 @@ export default function Watch() {
   const d = new Date();
   const formatted = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   const isReleased =
-    category !== "movie" || formatted > moviedata?.release_date;
+    category !== "movie" || formatted >= moviedata?.release_date;
 
   function handletogether(id, title) {
     const roomId = id * 2;
@@ -86,8 +86,8 @@ export default function Watch() {
 
   useEffect(() => {
     const { s, ep } = Object.fromEntries(searchParams);
-    setseasonno(s);
-    setepNo(ep);
+    s && setseasonno(s);
+    ep && setepNo(ep);
   }, []);
 
   return (
