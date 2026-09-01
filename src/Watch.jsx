@@ -12,6 +12,7 @@ import Bottom from "./components/Bottom";
 import { dataContext } from "./Context/Moviedatacontext";
 import WatchSkeleton from "./components/WatchSkeleton";
 import { searchContext } from "./Context/MovieSearchcontext";
+import Similar from "./components/Similar";
 
 export default function Watch() {
   const UsersIcon = () => (
@@ -183,6 +184,7 @@ export default function Watch() {
               />
             )}
           </div>
+          <Similar istv={istv} id={state?.id || id} />
           <div className="w-full flex gap-4"></div>
           {moviedata && isReleased && <Bottom moviedata={moviedata} />}
         </>
