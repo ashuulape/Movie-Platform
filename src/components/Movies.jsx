@@ -74,7 +74,7 @@ const Movies = () => {
 
   return (
     <div className="w-fit flex flex-col pb-10 items-center ">
-      <div className="w-[90%] py-8 h-fit flex flex-wrap gap-4 md:gap-10">
+      <div className="w-[90%] pb-8 h-fit flex flex-wrap gap-4 md:gap-10">
         {moviedata.map((e, key) => {
           return <Card key={key} data={e} />;
         })}

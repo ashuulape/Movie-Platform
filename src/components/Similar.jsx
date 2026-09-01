@@ -98,7 +98,7 @@ const Similar = ({ istv, id }) => {
 
       <div className="w-full flex items-center justify-between">
         <h1 className="font-semibold">
-          Similar {istv ? "Tv shows" : "Movies"} You Would like
+          Similar {istv ? "Tv shows" : "Movies"} You Might like
         </h1>
         <div className="flex gap-2">
           <button

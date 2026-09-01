@@ -18,7 +18,7 @@ const Home = () => {
       <div className="relative py-4 flex  justify-center items-center flex-col  ">
         <Hero />
         {!loading && (
-          <h1 className="text-xl bg-black/30 outline-1 outline-white/30 my-2 px-4 rounded-sm font-semibold">
+          <h1 className=" text-sm md:text-xl bg-black/30 outline-1 outline-white/30 my-4 px-4 rounded-sm font-semibold">
             {head[movielistno]} : {category ? "Movies" : "TV Shows"}
           </h1>
         )}

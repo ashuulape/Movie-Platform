@@ -1,5 +1,5 @@
 import axios, { spread } from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { dataContext } from "../Context/Moviedatacontext";
 import { searchContext } from "../Context/MovieSearchcontext";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,14 @@ const Hero = () => {
   const { category, loading } = useContext(searchContext);
   const [herodata, setherodata] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // ── drag state ──────────────────────────────────────────────
+  const dragStartX   = useRef(null);   // pointer X at drag start
+  const dragDeltaX   = useRef(0);      // live drag offset in px
+  const isDragging   = useRef(false);
+  const stripRef     = useRef(null);   // the sliding <div>
+  const autoRef      = useRef(null);   // holds the interval id
+  // ────────────────────────────────────────────────────────────
 
   useEffect(() => {
     async function fetchtrending() {
@@ -25,14 +33,75 @@ const Hero = () => {
     fetchtrending();
   }, [category]);
 
+  // auto-advance (stored in ref so drag can pause it)
   useEffect(() => {
     if (herodata.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % herodata.length);
+      autoRef.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % herodata.length);
       }, 3000);
-      return () => clearInterval(interval);
+      return () => clearInterval(autoRef.current);
     }
   }, [herodata]);
+
+  // ── drag helpers ─────────────────────────────────────────────
+  const DRAG_THRESHOLD = 60; // px needed to count as a swipe
+
+  const applyLiveTransform = (delta) => {
+    if (!stripRef.current) return;
+    const base = currentIndex * 100; // vw units → convert to px via clientWidth
+    const vw   = window.innerWidth;
+    stripRef.current.style.transition = "none";
+    stripRef.current.style.transform  =
+      `translateX(calc(-${base}vw + ${delta}px))`;
+  };
+
+  const resetTransition = () => {
+    if (!stripRef.current) return;
+    stripRef.current.style.transition = "transform 700ms ease-in-out";
+  };
+
+  const onDragStart = (clientX) => {
+    dragStartX.current = clientX;
+    dragDeltaX.current = 0;
+    isDragging.current = true;
+    clearInterval(autoRef.current); // pause auto-play
+  };
+
+  const onDragMove = (clientX) => {
+    if (!isDragging.current) return;
+    dragDeltaX.current = clientX - dragStartX.current;
+    applyLiveTransform(dragDeltaX.current);
+  };
+
+  const onDragEnd = () => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    resetTransition();
+
+    const delta = dragDeltaX.current;
+    setCurrentIndex((prev) => {
+      if (delta < -DRAG_THRESHOLD) return (prev + 1) % herodata.length;
+      if (delta >  DRAG_THRESHOLD) return (prev - 1 + herodata.length) % herodata.length;
+      return prev; // snap back
+    });
+
+    // restart auto-play
+    autoRef.current = setInterval(() => {
+      setCurrentIndex((p) => (p + 1) % herodata.length);
+    }, 3000);
+  };
+
+  // ── mouse events ─────────────────────────────────────────────
+  const handleMouseDown  = (e) => { e.preventDefault(); onDragStart(e.clientX); };
+  const handleMouseMove  = (e) => { if (isDragging.current) onDragMove(e.clientX); };
+  const handleMouseUp    = ()  => onDragEnd();
+  const handleMouseLeave = ()  => { if (isDragging.current) onDragEnd(); };
+
+  // ── touch events ─────────────────────────────────────────────
+  const handleTouchStart = (e) => onDragStart(e.touches[0].clientX);
+  const handleTouchMove  = (e) => onDragMove(e.touches[0].clientX);
+  const handleTouchEnd   = ()  => onDragEnd();
+  // ─────────────────────────────────────────────────────────────
 
   if (loading) {
     return (
@@ -52,8 +121,19 @@ const Hero = () => {
   }
 
   return (
-    <section className="relative w-full md:h-[50vh] max-h-fit overflow-x-hidden">
+    <section
+      className="relative w-full md:h-[50vh] max-h-fit overflow-x-hidden select-none"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{ cursor: isDragging.current ? "grabbing" : "grab" }}
+    >
       <div
+        ref={stripRef}
         className="flex flex-row w-fit h-full transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}vw)` }}
       >

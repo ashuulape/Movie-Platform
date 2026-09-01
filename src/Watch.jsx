@@ -110,35 +110,37 @@ export default function Watch() {
                     backgroundPosition: "center",
                   }}
                 ></div>
-
-                {!istv ? (
-                  <ScreenMovie stateid={state?.id} id={id} />
-                ) : (
-                  <ScreenTv
-                    stateid={state?.id}
-                    id={id}
-                    sno={seasonno}
-                    epno={epNo}
-                  />
-                )}
-                <div className="flex items-center gap-10">
-                  {!istv && (
-                    <button
-                      onClick={() => handletogether(id, moviedata?.title)}
-                      className="w-fit h-fit px-8 py-2 bg-white text-black font-semibold items-center gap-2 my-4 flex  rounded-sm pointer-events-auto relative "
-                    >
-                      Watch Together <UsersIcon />
-                    </button>
+                <div className="bg-black pb-2 h-fit rounded-sm md:rounded-2xl overflow-hidden flex flex-col items-center md:gap-2 text-center">
+                  {!istv ? (
+                    <ScreenMovie stateid={state?.id} id={id} />
+                  ) : (
+                    <ScreenTv
+                      stateid={state?.id}
+                      id={id}
+                      sno={seasonno}
+                      epno={epNo}
+                    />
                   )}
-                  <h1 className=" text-sm md:text-xl h-fit  font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
-                    Server {serverno}
-                  </h1>
+
+                  <div className="flex items-center gap-10">
+                    {!istv && (
+                      <button
+                        onClick={() => handletogether(id, moviedata?.title)}
+                        className="w-fit h-fit px-8 py-2 bg-white text-black font-semibold items-center gap-2 my-4 flex  rounded-sm pointer-events-auto relative "
+                      >
+                        Watch Together <UsersIcon />
+                      </button>
+                    )}
+                    <h1 className=" text-sm my-2 md:text-xl h-fit  font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
+                      Server {serverno}
+                    </h1>
+                  </div>
+                  <h2 className="text-red-700 font-semibold text-[10px] md:text-lg">
+                    <span className="font-bold">NOTE : </span>
+                    Player contains Ads — try using an Adblocker or Brave
+                    Browser for an Ad-free experience
+                  </h2>
                 </div>
-                <h2 className="text-red-700 font-semibold text-[10px] md:text-lg">
-                  <span className="font-bold">NOTE : </span>
-                  Player contains Ads — try using an Adblocker or Brave Browser
-                  for an Ad-free experience
-                </h2>
                 {istv && (
                   <div className="w-full h-fit text-white font-thin relative flex flex-col gap-2">
                     <h2 className="font-bold">Seasons :</h2>
@@ -199,7 +201,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 1) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
         src={`${import.meta.env.VITE_SERVER_1}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -209,7 +211,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 2) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
         src={`${import.meta.env.VITE_SERVER_2}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -219,7 +221,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 3) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video"
         src={`${import.meta.env.VITE_SERVER_3}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -229,7 +231,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 4) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
         src={`${import.meta.env.VITE_SERVER_4}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -239,7 +241,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 5) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
         src={`${import.meta.env.VITE_SERVER_5}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -255,7 +257,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 1) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video"
         src={`${import.meta.env.VITE_TV_SERVER_1}${movieid}/${sno}/${epno}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -265,7 +267,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 2) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
         src={`${import.meta.env.VITE_TV_SERVER_2}${movieid}&s=${sno}&e=${epno}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -275,7 +277,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 3) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video"
         src={`${import.meta.env.VITE_TV_SERVER_3}${movieid}&s=${sno}&e=${epno}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -285,7 +287,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 4) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video"
         src={`${import.meta.env.VITE_TV_SERVER_4}${movieid}/${sno}/${epno}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -295,9 +297,8 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 5) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video md:rounded-2xl"
-        src={`${import.meta.env.VITE_SERVER_5}${movieid}&s=${sno}&e=${epno}`}
-        frameBorder="0"
+        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
+        src={`${import.meta.env.VITE_TV_SERVER_5}${movieid}/${sno}/${epno}`}
         allowFullScreen={true}
       ></iframe>
     );
