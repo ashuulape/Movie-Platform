@@ -35,7 +35,10 @@ const Navbar = ({ side }) => {
       <div className="flex gap-0 sm:gap-4">
         {side && <SidebarBtn />}
         <div
-          onClick={() => navigate("/")}
+          onClick={() => {
+            setsearch("");
+            navigate("/");
+          }}
           className="flex sm:px-0 px-4  h-full items-center justify-center border-r-1  border-white/30"
         >
           <img
@@ -52,6 +55,11 @@ const Navbar = ({ side }) => {
         <div className="h-full min-w-45  w-[30vw] max-w-150 flex overflow-hidden rounded-4xl outline-1 outline-white/20">
           <input
             onChange={(e) => setsearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                fetchdata(search);
+              }
+            }}
             value={search}
             type="text"
             className="w-[90%] text-xl md:text-2xl flex  font-semibold h-full bg-[#0f0f0f]/50 flex-5 rounded-[4xl_0_0_4xl]  focus:outline-0 md:px-10 px-4 "

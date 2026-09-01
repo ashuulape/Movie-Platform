@@ -23,6 +23,8 @@ export const Card = ({ data }) => {
     name,
   } = data;
 
+  const contentid = id || data?.tmdb_id;
+
   const [isreleased, setisreleased] = useState(formatted > release_date);
 
   useEffect(() => {
@@ -68,8 +70,8 @@ export const Card = ({ data }) => {
       className=" relative px-2 py-4 w-full min-w-full rounded-sm  aspect-video flex flex-row gap-2 flex-1 object-contain   hover:scale-105 transition-transform duration-200  "
       onClick={() =>
         category
-          ? handleroute(id, original_title, category)
-          : handleroute(id, name, category)
+          ? handleroute(contentid, original_title, category)
+          : handleroute(contentid, name, category)
       }
       style={{
         backgroundImage: `linear-gradient(to bottom, rgba(15,15,15,0.6) 0%, rgba(15,15,15,1) 80%), url(${
@@ -104,7 +106,14 @@ export const Card = ({ data }) => {
                   </span>
                 );
               })
-            : ""}
+            : data?.genres.map((e, idx) => (
+                <span
+                  id={idx}
+                  className="text-[8px] px-1  border-1 border-white/20 rounded-sm"
+                >
+                  {e}
+                </span>
+              ))}
         </div>
         <p className="text-xs">{release_date}</p>
         <span className="text-white text-sm absolute z-4 right-1/50 bg-black/40 backdrop-blur-xs top-1/40 outline-1  outline-white/30 px-2  rounded-sm font-bold">

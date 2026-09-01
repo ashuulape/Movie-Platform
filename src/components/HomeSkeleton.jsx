@@ -16,18 +16,7 @@ const HomeSkeleton = () => {
     <section className="animate-pulse w-full">
       <div className="relative py-4 flex justify-center items-center flex-col">
         {/* Hero Skeleton */}
-        <div className="relative w-full md:h-[50vh] aspect-video bg-white/5 overflow-x-hidden flex items-end p-10">
-          <div className="w-1/2 h-full flex flex-col justify-end gap-4">
-            <div className="h-10 w-3/4 bg-white/10 rounded-md"></div>
-            <div className="flex gap-2">
-              <div className="h-6 w-16 bg-white/10 rounded-sm"></div>
-              <div className="h-6 w-20 bg-white/10 rounded-sm"></div>
-              <div className="h-6 w-24 bg-white/10 rounded-sm"></div>
-            </div>
-            <div className="h-4 w-full bg-white/10 rounded-md"></div>
-            <div className="h-4 w-4/5 bg-white/10 rounded-md"></div>
-          </div>
-        </div>
+        {/* */}
 
         {/* Heading Skeleton */}
         <div className="h-10 w-64 bg-white/10 outline-1 outline-white/30 my-6 px-4 rounded-sm"></div>
@@ -101,7 +90,7 @@ const HomeSkeleton = () => {
                   <div className="h-6 w-3/4 bg-white/20 rounded-md mt-2"></div>
                   <div className="h-4 w-1/3 bg-white/10 rounded-md mt-1"></div>
                 </div>
-              )
+              ),
             )}
           </div>
 

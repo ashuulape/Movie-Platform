@@ -7,7 +7,7 @@ import { dataContext } from "./Context/Moviedatacontext";
 import Hero from "./components/Hero";
 import { searchContext } from "./Context/MovieSearchcontext";
 const Home = () => {
-  const { category } = useContext(searchContext);
+  const { category, loading } = useContext(searchContext);
   document.title = `FreeTube : Free movies for everyone`;
   const head = ["Now playing ", "Popular", "Top Rating", "Upcoming"];
   const { movielistno } = useContext(dataContext);
@@ -17,9 +17,11 @@ const Home = () => {
       <Navbar side={true} />
       <div className="relative py-4 flex  justify-center items-center flex-col  ">
         <Hero />
-        <h1 className="text-xl bg-black/30 outline-1 outline-white/30 my-2 px-4 rounded-sm font-semibold">
-          {head[movielistno]} : {category ? "Movies" : "TV Shows"}
-        </h1>
+        {!loading && (
+          <h1 className="text-xl bg-black/30 outline-1 outline-white/30 my-2 px-4 rounded-sm font-semibold">
+            {head[movielistno]} : {category ? "Movies" : "TV Shows"}
+          </h1>
+        )}
         <Movies />
       </div>
     </section>

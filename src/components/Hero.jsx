@@ -5,7 +5,7 @@ import { searchContext } from "../Context/MovieSearchcontext";
 import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
-  const { category } = useContext(searchContext);
+  const { category, loading } = useContext(searchContext);
   const [herodata, setherodata] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -33,6 +33,23 @@ const Hero = () => {
       return () => clearInterval(interval);
     }
   }, [herodata]);
+
+  if (loading) {
+    return (
+      <div className="relative w-full md:h-[50vh] aspect-video bg-white/5 overflow-x-hidden flex items-end p-10">
+        <div className="w-1/2 h-full flex flex-col justify-end gap-4">
+          <div className="h-10 w-3/4 bg-white/10 rounded-md"></div>
+          <div className="flex gap-2">
+            <div className="h-6 w-16 bg-white/10 rounded-sm"></div>
+            <div className="h-6 w-20 bg-white/10 rounded-sm"></div>
+            <div className="h-6 w-24 bg-white/10 rounded-sm"></div>
+          </div>
+          <div className="h-4 w-full bg-white/10 rounded-md"></div>
+          <div className="h-4 w-4/5 bg-white/10 rounded-md"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="relative w-full md:h-[50vh] max-h-fit overflow-x-hidden">
