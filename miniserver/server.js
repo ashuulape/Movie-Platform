@@ -4,7 +4,7 @@ const axios = require('axios');
 require("dotenv").config();
 const http = require("http");
 const { Server } = require("socket.io");
-const {gettvdata, getmoviedata, getsimilarmovie} = require("./controller");
+const {gettvdata, getmoviedata, getsimilarmovie,getsimilartv} = require("./controller");
 
 const app = express();
 
@@ -213,6 +213,7 @@ app.get('/api/movie/:id', getmoviedata);
 app.get('/api/movie/similar/:id', getsimilarmovie);
 
 app.get('/api/tv/:id',gettvdata)
+app.get('/api/tv/similar/:id',getsimilartv)
 
 
 

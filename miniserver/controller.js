@@ -14,6 +14,19 @@ async function gettvdata  (req, res){
         }
 
 }
+async function getsimilartv  (req, res){
+
+
+        try {
+
+            const response = await axios.get(`${process.env.SITE_URL}similartv?tmdb_id=${req.params.id}` );
+            res.json(response.data);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).json({ error: 'Failed to fetch movie data' });
+        }
+
+}
  async function getmoviedata  (req, res){
 
 
@@ -44,4 +57,4 @@ async function gettvdata  (req, res){
 
 
 
-module.exports={getmoviedata,getsimilarmovie,gettvdata}
+module.exports={getmoviedata,getsimilarmovie,gettvdata,getsimilartv}

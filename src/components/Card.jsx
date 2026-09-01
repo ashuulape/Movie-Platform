@@ -60,7 +60,6 @@ export const Card = ({ data }) => {
     10752: "War",
     37: "Western",
   };
-  console.log(data?.poster);
 
   return ismobile ? (
     <div
@@ -74,7 +73,7 @@ export const Card = ({ data }) => {
       }
       style={{
         backgroundImage: `linear-gradient(to bottom, rgba(15,15,15,0.6) 0%, rgba(15,15,15,1) 80%), url(${
-          data?.backdrops[0] ||
+          data?.backdrops?.[0] ||
           `https://image.tmdb.org/t/p/w400${backdrop_path}`
         })`,
         backgroundSize: "100%",
