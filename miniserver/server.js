@@ -194,7 +194,7 @@ server.listen(PORT, () => {
 
 
 const allowedOrigins = [
-  'http://localhost:3000',
+  'http://localhost:5173',
   'https://freetube69.onrender.com'
 ];
 
