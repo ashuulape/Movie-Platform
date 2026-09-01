@@ -110,7 +110,7 @@ export default function Watch() {
                     backgroundPosition: "center",
                   }}
                 ></div>
-                <div className="bg-black pb-2 h-fit rounded-sm md:rounded-2xl overflow-hidden flex flex-col items-center md:gap-2 text-center">
+                <div className="bg-black pb-2 h-fit w-full  rounded-sm md:rounded-2xl overflow-hidden flex flex-col items-center md:gap-2 text-center">
                   {!istv ? (
                     <ScreenMovie stateid={state?.id} id={id} />
                   ) : (
