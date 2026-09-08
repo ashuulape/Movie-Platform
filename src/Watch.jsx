@@ -39,7 +39,7 @@ export default function Watch() {
   const [moviedata, setmoviedata] = useState(null);
   const [setsource, source] = useState(null);
   const [epNo, setepNo] = useState(1);
-  const [seasonno, setseasonno] = useState(0);
+  const [seasonno, setseasonno] = useState(1);
   const { serverno } = useContext(searchContext);
 
   const [loading, setLoading] = useState(true);
@@ -90,6 +90,8 @@ export default function Watch() {
     s && setseasonno(s);
     ep && setepNo(ep);
   }, []);
+
+  console.log();
 
   return (
     <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
@@ -148,7 +150,7 @@ export default function Watch() {
                       {moviedata?.seasons?.slice(0).map((e, idx) => (
                         <button
                           onClick={() => setseasonno(idx)}
-                          className={` px-2 rounded-sm ${seasonno == idx ? "bg-[#EDEBEA] text-black" : "bg-[#232323]/30 outline-1 outline-white/10"}`}
+                          className={`max-w-fit min-w-14 px-2 rounded-sm ${seasonno == e?.season_number ? "bg-[#EDEBEA] text-black" : "bg-[#232323]/30 outline-1 outline-white/10"}`}
                           id={idx}
                         >
                           {moviedata?.seasons[1]?.name?.startsWith("Season")
@@ -162,7 +164,11 @@ export default function Watch() {
                     <h2 className="font-bold">Episode : </h2>
                     <div className="grid grid-cols-6 sm:grid-cols-12 auto-rows-max w-full gap-2 text-white font-bold">
                       {Array.from(
-                        { length: moviedata?.seasons[seasonno]?.episode_count },
+                        {
+                          length: moviedata?.seasons?.find(
+                            (e) => e?.season_number == seasonno,
+                          )?.episode_count,
+                        },
                         (_, idx) => (
                           <button
                             className={` px-2 rounded-sm ${epNo == idx + 1 ? "bg-[#EDEBEA] text-black" : "bg-[#232323]/30 outline-1 outline-white/10"}`}
