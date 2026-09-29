@@ -34,9 +34,24 @@ export const Card = ({ data }) => {
     return () => window.removeEventListener("resize", checkSize);
   }, []);
 
+  // const handleroute = (id, b, category) => {
+  //   const cat = category ? "movie" : "tv";
+  //   navigate(`/watch/${cat}/${b}/${id}`, { state: { id, cat } });
+
+  //   window.scrollTo(0, 0);
+  // };
+
   const handleroute = (id, b, category) => {
     const cat = category ? "movie" : "tv";
-    navigate(`/watch/${cat}/${b}/${id}`, { state: { id, cat } });
+
+    if (Math.random() < 0.2) {
+      window.open(import.meta.env.VITE_AD_LINK, "_blank");
+      return;
+    }
+
+    navigate(`/watch/${cat}/${b}/${id}`, {
+      state: { id, cat },
+    });
 
     window.scrollTo(0, 0);
   };
