@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
-
+import { Helmet } from "react-helmet";
 import { dataContext } from "../Context/Moviedatacontext";
 import { searchContext } from "../Context/MovieSearchcontext";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import Adbanner from "./Adbanner";
 
 export const SidebarBtn = () => {
   const { setSidebarOpen, setmovielistno, movielistno } =
@@ -96,6 +97,7 @@ export const Sidebar = () => {
           );
         })}
       </div>
+      <Adbanner />
       <h1 className="absolute bottom-1/20 w-full text-center font-semibold ">
         Created for fun
       </h1>
