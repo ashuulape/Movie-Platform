@@ -6,6 +6,7 @@ import { Sidebar } from "./components/Sidebar";
 import { dataContext } from "./Context/Moviedatacontext";
 import Hero from "./components/Hero";
 import { searchContext } from "./Context/MovieSearchcontext";
+import { HoriAd } from "./components/Adbanner";
 const Home = () => {
   const { category, loading } = useContext(searchContext);
   document.title = `FreeTube : Free movies for everyone`;
@@ -17,6 +18,7 @@ const Home = () => {
       <Navbar side={true} />
       <div className="relative py-4 flex  justify-center items-center flex-col  ">
         <Hero />
+        <HoriAd />
         {!loading && (
           <h1 className=" text-sm md:text-xl bg-black/30 outline-1 outline-white/30 my-4 px-4 rounded-sm font-semibold">
             {head[movielistno]} : {category ? "Movies" : "TV Shows"}
