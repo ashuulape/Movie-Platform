@@ -39,6 +39,7 @@ function Adbanner() {
 export default Adbanner;
 
 export const HoriAd = () => {
+  const ismobile = window.innerWidth < 768;
   const adRef = useRef(null);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export const HoriAd = () => {
     'key' : '634106fe8b195074a8fdd4465fee4aeb',
     'format' : 'iframe',
     'height' : 90,
-    'width' : 728,
+    'width' : ${ismobile ? 500 : 728} ,
     'params' : {}
       };
     `;
@@ -71,5 +72,5 @@ export const HoriAd = () => {
     };
   }, []);
 
-  return <div ref={adRef} style={{ width: 160, height: 300 }} />;
+  return <div ref={adRef} style={{ margin: "10px" }} />;
 };

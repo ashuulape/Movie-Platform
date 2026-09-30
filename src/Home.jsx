@@ -25,6 +25,7 @@ const Home = () => {
           </h1>
         )}
         <Movies />
+        <HoriAd />
       </div>
     </section>
   );
