@@ -1,4 +1,5 @@
 import React from "react";
+import { HoriAd } from "./Adbanner";
 
 const Bottom = ({ moviedata }) => {
   return (
@@ -14,6 +15,7 @@ const Bottom = ({ moviedata }) => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             ></iframe>
+            <HoriAd />
           </div>
         </div>
         <div className="flex-6 flex gap-8 flex-col px-4 sm:pt-10 sm:px-10">
