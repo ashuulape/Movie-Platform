@@ -33,7 +33,12 @@ function Adbanner() {
     };
   }, []);
 
-  return <div ref={adRef} style={{ margin: "10px" }} />;
+  return (
+    <div
+      ref={adRef}
+      style={{ margin: "10px", width: "100%", height: "fit-content" }}
+    />
+  );
 }
 
 export default Adbanner;
@@ -75,6 +80,28 @@ export const HoriAd = () => {
     adScript.async = true;
 
     container.appendChild(config);
+    container.appendChild(adScript);
+
+    return () => {
+      container.innerHTML = "";
+    };
+  }, []);
+
+  return <div ref={adRef} style={{ margin: "10px" }} />;
+};
+
+export const SocialAd = () => {
+  const adRef = useRef(null);
+
+  useEffect(() => {
+    const container = adRef.current;
+    if (!container) return;
+
+    const adScript = document.createElement("script");
+    adScript.async = true;
+    adScript.src =
+      "https://pl31584452.profitableratecpmnetwork.com/e1/85/cc/e185cccab8231d03573c76629f860fbb.js";
+
     container.appendChild(adScript);
 
     return () => {

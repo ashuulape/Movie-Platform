@@ -6,7 +6,7 @@ import { Sidebar } from "./components/Sidebar";
 import { dataContext } from "./Context/Moviedatacontext";
 import Hero from "./components/Hero";
 import { searchContext } from "./Context/MovieSearchcontext";
-import { HoriAd } from "./components/Adbanner";
+import { HoriAd, SocialAd } from "./components/Adbanner";
 const Home = () => {
   const { category, loading } = useContext(searchContext);
   document.title = `FreeTube : Free movies for everyone`;
@@ -25,7 +25,7 @@ const Home = () => {
           </h1>
         )}
         <Movies />
-        <HoriAd />
+        <SocialAd />
       </div>
     </section>
   );

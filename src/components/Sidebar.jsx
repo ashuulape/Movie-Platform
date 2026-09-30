@@ -60,7 +60,7 @@ export const Sidebar = () => {
   return (
     <section
       id="Sidebar"
-      className="w-[30vw] max-w-100 min-w-50 -translate-x-50 md:-translate-x-[25vw] fixed z-10 h-full bg-black/40 backdrop-blur-xl outline-r outline-1 outline-white/30"
+      className="w-[60vw] max-w-100 min-w-50 -translate-x-50 md:-translate-x-[25vw] fixed z-10 h-full bg-black/40 backdrop-blur-xl outline-r outline-1 outline-white/30"
     >
       <div className="flex items-center h-20 w-full justify-between"></div>
 
