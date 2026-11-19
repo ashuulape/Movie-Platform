@@ -307,33 +307,33 @@ const VideoPlayer = ({
   }, [stream]);
 
   return (
-    <div className="relative flex-shrink-0 min-w-[35vw] w-[50vw] flex-1 max-w-full md:flex-1 md:w-[15vw] md:min-w-[10vw] sm:max-w-[30vw] aspect-video rounded-xl overflow-hidden bg-neutral-900 border border-white/10 shadow-lg group">
+    <div className="party-participant">
       {videoEnabled && stream ? (
         <video
           ref={videoRef}
           autoPlay
           playsInline
           muted={isLocal}
-          className={`w-full h-full object-cover ${isLocal ? "[transform:scaleX(-1)]" : ""}`}
+          className={`party-video ${isLocal ? "party-video--local" : ""}`}
         />
       ) : (
-        <div className="w-full h-full flex flex-col items-center justify-center gap-1  from-neutral-800 to-neutral-900">
-          <div className="w-9 h-9 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-400 text-sm font-bold">
+        <div className="party-participant__placeholder">
+          <div className="party-avatar">
             {(userName || "U").charAt(0).toUpperCase()}
           </div>
-          <p className="text-[10px] text-neutral-500">Camera Off</p>
+          <p>Camera off</p>
         </div>
       )}
       {/* Name label */}
-      <div className="absolute bottom-1.5 left-1.5 right-1.5 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-black/70 backdrop-blur-sm border border-white/10 text-[10px] text-white font-medium truncate">
-        <span className="truncate">{userName || "User"}</span>
+      <div className="party-participant__name">
+        <span>{userName || "User"}</span>
         {isLocal && (
-          <span className="text-neutral-400 font-normal shrink-0">(You)</span>
+          <span>(You)</span>
         )}
       </div>
       {/* Muted badge */}
       {!micEnabled && (
-        <div className="absolute top-1.5 right-1.5 p-1 rounded-full bg-red-600/90 text-white shadow">
+        <div className="party-muted">
           <MicOffIcon />
         </div>
       )}
@@ -368,7 +368,7 @@ const LiveBroadcastViewer = ({ stream }) => {
       autoPlay
       playsInline
       controls
-      className="w-full h-full object-contain bg-black"
+      className="party-video"
     />
   );
 };
@@ -989,132 +989,117 @@ export default function Theater() {
 
   // ─── Shared control button style ─────────────────────────────────────────────
   const ctrlBtn = (active = false, danger = false) =>
-    `w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 shadow-md cursor-pointer ${
+    `party-control-button ${
       danger
-        ? "bg-red-600 hover:bg-red-700 text-white shadow-red-600/40"
+        ? "party-control-button--danger"
         : active
-          ? "bg-red-600/30 text-red-400 border border-red-500/50"
-          : "bg-neutral-800 hover:bg-neutral-700 text-neutral-300 border border-neutral-700/50"
+          ? "party-control-button--active"
+          : ""
     }`;
 
   // ─── RENDER ───────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen w-full bg-[#0f0f0f] text-white font-sans overflow-hidden flex flex-col">
+    <main className="theater-page page-enter">
       {!inCall ? (
-        /* ═══════════════ LOBBY SCREEN ═══════════════ */
-        <div className="min-h-screen flex flex-col   items-center justify-center p-4 relative overflow-hidden">
-          {/* ambient glow */}
-
-          {/* back button */}
+        <section className="party-lobby">
           <button
+            type="button"
             onClick={() => navigate(-1)}
-            className="absolute top-5 left-5 flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-900/80 border border-neutral-800 text-neutral-300 hover:text-white hover:border-neutral-700 transition-all text-sm backdrop-blur-md shadow-lg cursor-pointer"
+            className="ui-button party-back"
           >
             <ArrowLeftIcon />
             Back to Movie
           </button>
 
-          <div className="relative flex flex-col z-10 w-full max-w-[80vw] bg-neutral-900/80 backdrop-blur-2xl border border-white/10 rounded-lg p-6 sm:p-8 shadow-2xl shadow-black">
-            {/* brand */}
-            <div className="lg:hidden">
-              <div className="flex flex-col items-center text-center mb-6">
-                <div className="p-3 rounded-2xl bg-red-600/10 border border-red-500/20 text-red-500 mb-3">
+          <div className="party-card">
+            <div className="party-brand party-brand--mobile">
+                <div className="party-brand-mark">
                   <SparklesIcon />
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-roboto mb-1">
+                <h1>
                   Watch Together
                 </h1>
-                <p className="text-xs sm:text-sm text-neutral-400">
-                  Watch movies with your love one's
+                <p>
+                  Share a movie and enjoy it together.
                 </p>
-              </div>
             </div>
 
             {initialTitle && (
-              <div className="lg:hidden mb-5 px-3 py-2 rounded-sm bg-red-950/40 border border-red-500/20 text-xs text-red-300 text-center">
+              <div className="party-title party-title--mobile">
                 Watch Party for:{" "}
-                <span className="font-semibold text-white">{initialTitle}</span>
+                <strong>{initialTitle}</strong>
               </div>
             )}
-            <div className="flex flex-col lg:flex-row gap-4 items-center">
-              {/* camera preview */}
-              <div className="relative w-full aspect-video flex-2 bg-black rounded-2xl overflow-hidden border border-neutral-800 mb-6 shadow-inner flex items-center justify-center">
+            <div className="party-preview">
                 {videoEnabled && localStream ? (
                   <video
                     autoPlay
                     muted
                     playsInline
-                    className="w-full h-full object-cover [transform:scaleX(-1)]"
+                    className="party-video party-video--local"
                     ref={(el) => {
                       if (el && localStream) el.srcObject = localStream;
                     }}
                   />
                 ) : (
-                  <div className="flex flex-col items-center gap-2 text-neutral-500">
-                    <div className="p-4 rounded-full bg-neutral-800 border border-neutral-700">
+                  <div className="party-preview-placeholder">
+                    <div className="party-avatar">
                       <VideoOffIcon />
                     </div>
-                    <p className="text-xs text-neutral-400">Camera Off</p>
+                    <p>Camera off</p>
                   </div>
                 )}
-                <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-white/10 text-xs font-medium text-white">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="party-preview-status">
+                  <span className="status-dot" />
                   Preview
                 </div>
-              </div>
-              <div className="flex-1 w-full">
-                <div className="hidden lg:block lg:flex  justify-center">
-                  <div className="flex flex-col items-center text-center mb-6">
-                    <div className="p-3 rounded-2xl bg-red-600/10 border border-red-500/20 text-red-500 mb-3">
+            </div>
+            <div className="party-form-column">
+                <div className="party-brand party-brand--desktop">
+                    <div className="party-brand-mark">
                       <SparklesIcon />
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-roboto mb-1">
+                    <h1>
                       Watch Together
                     </h1>
-                    <p className="text-xs sm:text-sm text-neutral-400">
-                      Watch movies with your love one's
+                    <p>
+                      Share a movie and enjoy it together.
                     </p>
-                  </div>
                 </div>
                 {initialTitle && (
-                  <div className="hidden lg:block mb-5 px-3 py-2 rounded-sm bg-red-950/40 border border-red-500/20 text-xs text-red-300 text-center">
+                  <div className="party-title party-title--desktop">
                     Watch Party for:{" "}
-                    <span className="font-semibold text-white">
-                      {initialTitle}
-                    </span>
+                    <strong>{initialTitle}</strong>
                   </div>
                 )}
-                {/* form */}
-                <form onSubmit={handleJoinCall} className="space-y-4 w-full ">
-                  <div>
-                    <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">
+                <form onSubmit={handleJoinCall} className="party-form">
+                  <div className="form-field">
+                    <label>
                       Your Name
                     </label>
-                    <div className="relative flex items-center">
-                      <span className="absolute left-3.5 text-neutral-500 text-sm pointer-events-none"></span>
+                    <div>
                       <input
                         type="text"
                         placeholder="Enter your name…"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
-                        className="w-full bg-neutral-800/70 border border-neutral-700 focus:border-red-500 rounded-sm px-4 py-3 text-white placeholder-neutral-500 outline-none transition text-sm"
+                        className="ui-input"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">
+                  <div className="form-field">
+                    <label>
                       Room Code
                     </label>
-                    <div className="flex gap-2">
-                      <div className="relative flex-1 flex items-center">
-                        <span className="absolute  text-neutral-500 text-sm pointer-events-none"></span>
+                    <div className="room-code-field">
+                      <div className="room-code-input">
                         <input
                           type="text"
                           placeholder="e.g. room-9a3b"
                           value={roomId}
                           onChange={(e) => setRoomId(e.target.value)}
-                          className="w-full bg-neutral-800/70 border border-neutral-700 focus:border-red-500 rounded-sm  px-4 py-3 text-white placeholder-neutral-500 outline-none transition text-sm font-mono"
+                          className="ui-input"
                         />
                       </div>
                       <button
@@ -1125,7 +1110,7 @@ export default function Theater() {
                               Math.random().toString(36).substring(2, 8),
                           )
                         }
-                        className="px-3.5 py-3 rounded-sm bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-200 hover:text-white transition flex items-center gap-1.5 text-xs font-semibold whitespace-nowrap cursor-pointer"
+                        className="ui-button"
                       >
                         <SparklesIcon /> Create
                       </button>
@@ -1134,7 +1119,7 @@ export default function Theater() {
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 px-6  bg-white hover:bg-white/90 text-black font-semibold rounded-xl  transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm cursor-pointer"
+                    className="ui-button ui-button--primary party-join"
                   >
                     <VideoIcon />
                     Join Watch Party
@@ -1142,52 +1127,46 @@ export default function Theater() {
                 </form>
               </div>
             </div>
-          </div>
-        </div>
+        </section>
       ) : (
         /* ═══════════════ IN-CALL ROOM ═══════════════ */
-        <div className="flex flex-col h-screen overflow-hidden">
-          {/* ── HEADER ── */}
-          <header className="flex-shrink-0 gap-4 w-full bg-neutral-900/95 backdrop-blur-xl border-b border-white/10 px-1 md:px-3 py-4 flex flex-col items-center justify-between  z-30">
-            {/* left */}
+        <section className="party-room">
+          <header className="party-header">
             {window.innerWidth < 768 && (
               <div
                 onClick={() => navigate("/")}
-                className="flex flex-row relative sm:px-0 px-4  h-full items-center justify-center "
+                className="party-wordmark party-wordmark--mobile"
               >
-                <img
-                  className="md:h-10 h-8 rotate-z-180 "
-                  src="https://img.icons8.com/?size=200&id=37326&format=png&color=d02525"
-                  alt=""
-                />
-                <h2 className="relative md:text-2xl text-sm  h-fit w-fit font-semibold tracking-widest font-roboto pointer-events-none">
-                  Theater{" "}
-                  <span className="text-[8px] font-thin tracking-wide">
-                    BETA
-                  </span>
-                </h2>
+                <span className="brand-logo" aria-hidden="true">
+                  <svg width="28" height="20" viewBox="0 0 34 24" fill="none">
+                    <rect width="34" height="24" rx="7" fill="#E50914" />
+                    <polygon points="13.5,6.5 23.5,12 13.5,17.5" fill="#FFFFFF" />
+                  </svg>
+                </span>
+                <span className="brand-text">FreeTube</span>
+                <span className="party-beta">THEATER</span>
               </div>
             )}
 
-            <div className="w-full flex flex-row justify-between">
-              <div className="flex  md:items-center gap-2">
+            <div className="party-header-main">
+              <div className="party-header-start">
                 <button
+                  type="button"
                   onClick={() => navigate(-1)}
-                  className="flex items-center w-10 min-w-fit gap-1.5 px-3 py-1.5 rounded-sm bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-medium transition border border-neutral-700/50 cursor-pointer"
+                  className="ui-button"
                 >
                   <ArrowLeftIcon />
-                  <span className="hidden sm:inline">Back</span>
+                  Back
                 </button>
 
-                {/* host / live badge */}
-
-                {/* room code */}
-                <div className="flex items-center gap-1.5 px-1 md:px-2.5 py-1.5 rounded-sm bg-neutral-800/80 border border-neutral-700/60 text-xs font-mono text-neutral-300">
-                  Room:&nbsp;<strong className="text-white">{roomId}</strong>
+                <div className="party-room-code">
+                  Room <strong>{roomId}</strong>
                   <button
+                    type="button"
                     onClick={handleCopyCode}
-                    className="text-neutral-400 hover:text-white transition cursor-pointer"
+                    className="icon-button"
                     title="Copy Room Code"
+                    aria-label="Copy room code"
                   >
                     {copiedCode ? <CheckIcon /> : <CopyIcon />}
                   </button>
@@ -1196,39 +1175,33 @@ export default function Theater() {
               {window.innerWidth > 768 && (
                 <div
                   onClick={() => navigate("/")}
-                  className="flex md:flex-row flex-col sm:px-0 px-4  h-full items-center justify-center "
+                  className="party-wordmark"
                 >
-                  <img
-                    className="md:h-10 h-8 rotate-z-180 "
-                    src="https://img.icons8.com/?size=200&id=37326&format=png&color=d02525"
-                    alt=""
-                  />
-                  <h2 className="sm:block hidden  md:text-2xl text-sm sm:pl-2 px-4 h-fit w-fit font-semibold tracking-[10px] uppercase font-roboto pointer-events-none">
-                    Theater{" "}
-                    <span className="text-xs font-thin tracking-widest -ml-4 ">
-                      Beta
-                    </span>
-                  </h2>
+                  <span className="brand-logo" aria-hidden="true">
+                    <svg width="28" height="20" viewBox="0 0 34 24" fill="none">
+                      <rect width="34" height="24" rx="7" fill="#E50914" />
+                      <polygon points="13.5,6.5 23.5,12 13.5,17.5" fill="#FFFFFF" />
+                    </svg>
+                  </span>
+                  <span className="brand-text">FreeTube</span>
+                  <span className="party-beta">THEATER</span>
                 </div>
               )}
 
-              {/* right */}
-              <div className="flex items-center  gap-1.5 flex-wrap">
+              <div className="party-header-end">
                 <div
-                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${isHost ? "bg-amber-500/15 border-amber-500/30 text-amber-400" : "bg-emerald-500/15 border-emerald-500/30 text-emerald-400"}`}
+                  className={`party-badge ${isHost ? "party-badge--host" : ""}`}
                 >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full animate-pulse ${isHost ? "bg-amber-400" : "bg-emerald-400"}`}
-                  />
-                  {isHost ? " HOST" : "LIVE THEATER"}
+                  {isHost ? "HOST" : "LIVE THEATER"}
                 </div>
                 {isHost && (
                   <button
+                    type="button"
                     onClick={toggleMovieBroadcast}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-sm text-xs font-semibold transition cursor-pointer ${isBroadcastingMovie ? "bg-red-600 text-white animate-pulse shadow-md shadow-red-600/40" : "bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700/50"}`}
+                    className={`ui-button ${isBroadcastingMovie ? "ui-button--danger" : ""}`}
                   >
                     <TvIcon />
-                    <span className="hidden sm:inline">
+                    <span className="party-broadcast-label">
                       {isBroadcastingMovie
                         ? " Stop Broadcast"
                         : "Start Movie Broadcast"}
@@ -1236,37 +1209,32 @@ export default function Theater() {
                   </button>
                 )}
 
-                <div className="flex items-center max-w-fill min-w-fill w-fit gap-1.5 px-2.5 py-1.5 rounded-sm bg-neutral-800/80 border border-neutral-700 text-xs text-neutral-300 font-medium">
+                <div className="party-count">
                   <UsersIcon />
-                  {remotePeers.length + 1}
+                  <span>{remotePeers.length + 1}</span>
                 </div>
               </div>
             </div>
           </header>
 
-          {/* ── URL CHANGE BANNER ── */}
-
-          {/* ── MAIN WORKSPACE ── */}
           <div
             ref={mainwindow}
-            className="flex-1 relative flex overflow-hidden"
+            className={`party-workspace ${isChatOpen ? "party-workspace--chat-open" : ""}`}
           >
-            {/* Big screen */}
             <div
-              className={`flex-1  flex flex-col p-2 sm:py-4 overflow-hidden items-center justify-start bg-[#0a0a0a] ${isChatOpen ? "hidden xl:flex" : "flex"}`}
+              className={`party-screen ${isChatOpen ? "party-screen--chat-open" : ""}`}
             >
-              <div
-                className={`relative max-w-full min-w-[90vw] w-fit h-fit py-40 bg-black rounded-2xl overflow-hidden border border-neutral-800 shadow-2xl flex items-center justify-center aspect-video`}
-              >
+              <div className="party-screen-frame">
                 {isHost ? (
                   <>
                     <ScreenMovie id={id} />
-                    <div className="absolute top-3 left-3 flex items-center gap-2 px-3 py-1 rounded-lg bg-black/70 backdrop-blur-md border border-white/10 text-xs font-medium text-amber-400 shadow-lg">
-                      <span> Host Player</span>
+                    <div className="party-screen-badge">
+                      <span>Host player</span>
                       {!isBroadcastingMovie && (
                         <button
+                          type="button"
                           onClick={toggleMovieBroadcast}
-                          className="px-2 py-0.5 rounded bg-red-600 hover:bg-red-500 text-white text-[11px] font-semibold transition cursor-pointer"
+                          className="ui-button ui-button--primary"
                         >
                           Broadcast Window to Viewers
                         </button>
@@ -1281,23 +1249,23 @@ export default function Theater() {
                       remotePeers[0];
                     if (hostPeer?.stream) {
                       return (
-                        <div className="w-full aspect-video relative">
+                        <div className="party-live-stream">
                           <LiveBroadcastViewer stream={hostPeer.stream} />
-                          <div className="absolute top-3 left-3 px-3 py-1 rounded-lg bg-black/70 backdrop-blur-md border border-white/10 text-xs font-medium text-emerald-400 shadow-lg">
+                          <div className="party-screen-badge status-success">
                             {hostPeer.userName || "Host"}'s Live Stream
                           </div>
                         </div>
                       );
                     }
                     return (
-                      <div className="flex flex-col items-center justify-center text-center p-8 text-neutral-400 gap-4">
-                        <div className="p-4 rounded-full bg-neutral-900 border border-neutral-800 text-red-500 animate-pulse">
+                      <div className="party-waiting">
+                        <div className="party-waiting-icon">
                           <TvIcon />
                         </div>
-                        <h3 className="text-lg font-bold text-white">
+                        <h3>
                           Waiting for Host Movie Broadcast
                         </h3>
-                        <p className="text-xs text-neutral-400 max-w-xs">
+                        <p>
                           The room host is setting up the movie player. Stream
                           will start automatically!
                         </p>
@@ -1310,25 +1278,27 @@ export default function Theater() {
 
             {/* ── Chat Drawer ── */}
             {isChatOpen && (
-              <aside className="w-full pb-[14vh] md:pb-0 xl:w-80 h-full flex-shrink-0 bg-neutral-900/95 backdrop-blur-2xl border-l border-neutral-800 flex flex-col shadow-2xl z-20">
-                <div className="px-4 py-3 border-b border-neutral-800 flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <aside className="party-chat">
+                <div className="party-chat-header">
+                  <h3>
                     <MessageIcon /> Watch Party Chat
                   </h3>
                   <button
+                    type="button"
                     onClick={toggleChatDrawer}
-                    className="p-1 rounded-lg text-neutral-400 hover:text-white transition cursor-pointer"
+                    className="icon-button"
+                    aria-label="Close chat"
                   >
                     <XIcon />
                   </button>
                 </div>
-                <div className="flex-1 p-3 overflow-y-auto space-y-2.5 text-xs">
+                <div className="party-messages">
                   {messages.map((msg) => {
                     if (msg.type === "system")
                       return (
                         <div
                           key={msg.id}
-                          className="text-center text-[11px] text-neutral-500 bg-neutral-800/50 border border-neutral-700/40 py-1 px-3 rounded-full w-fit mx-auto"
+                          className="party-system-message"
                         >
                           {msg.message}
                         </div>
@@ -1336,20 +1306,20 @@ export default function Theater() {
                     return (
                       <div
                         key={msg.id}
-                        className={`flex flex-col ${msg.type === "own" ? "items-end" : "items-start"}`}
+                        className={`party-message-row ${msg.type === "own" ? "party-message-row--own" : ""}`}
                       >
                         {msg.type === "peer" && (
-                          <span className="text-[10px] font-semibold text-neutral-400 mb-0.5 px-1">
+                          <span className="party-message-author">
                             {msg.userName}
                           </span>
                         )}
                         <div
-                          className={`max-w-[85%] px-3 py-2 rounded-2xl text-xs break-words ${msg.type === "own" ? "bg-red-600 text-white rounded-tr-none shadow-md" : "bg-neutral-800 border border-neutral-700 text-neutral-100 rounded-tl-none"}`}
+                          className={`party-message ${msg.type === "own" ? "party-message--own" : ""}`}
                         >
                           {msg.message}
                         </div>
                         {msg.timestamp && (
-                          <span className="text-[9px] text-neutral-500 mt-0.5 px-1">
+                          <span className="party-message-time">
                             {msg.timestamp}
                           </span>
                         )}
@@ -1360,18 +1330,18 @@ export default function Theater() {
                 </div>
                 <form
                   onSubmit={handleSendMessage}
-                  className="p-3 border-t border-neutral-800 flex gap-2"
+                  className="party-chat-form"
                 >
                   <input
                     type="text"
                     placeholder="Type a message…"
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
-                    className="flex-1 bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 outline-none focus:border-red-500 transition"
+                    className="ui-input"
                   />
                   <button
                     type="submit"
-                    className="p-2 rounded-xl bg-red-600 hover:bg-red-500 text-white shadow-md transition cursor-pointer"
+                    className="ui-button ui-button--primary"
                   >
                     <SendIcon />
                   </button>
@@ -1380,26 +1350,27 @@ export default function Theater() {
             )}
           </div>
 
-          {/* ── Floating webcam dock ── */}
           {showWebcams && inCall && (
             <motion.div
               drag
               dragConstraints={mainwindow}
               dragElastic={0.2}
-              className="fixed bottom-20   left-4 z-30 bg-neutral-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-1 md:p-2.5 flex flex-col gap-2  max-w-full "
+              className="party-participants"
             >
-              <div className="flex items-center justify-between border-b border-neutral-800 pb-2 ">
-                <span className="text-xs font-bold text-neutral-300">
+              <div className="party-participants-header">
+                <span>
                   Participants ({remotePeers.length + 1})
                 </span>
                 <button
+                  type="button"
                   onClick={() => setShowWebcams(false)}
-                  className="p-1 text-neutral-400 hover:text-white rounded-lg transition cursor-pointer"
+                  className="icon-button"
+                  aria-label="Hide participants"
                 >
                   <XIcon />
                 </button>
               </div>
-              <div className="flex h-fit flex-row flex-wrap overflow-hidden gap-2  pb-1">
+              <div className="party-participant-list">
                 <VideoPlayer
                   stream={localStream}
                   isLocal
@@ -1421,9 +1392,9 @@ export default function Theater() {
             </motion.div>
           )}
 
-          {/* ── Floating controls dock ── */}
-          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 sm:gap-2.5 px-4 py-2.5 rounded-full bg-neutral-900/95 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black">
+          <div className="party-controls">
             <button
+              type="button"
               onClick={toggleMic}
               className={ctrlBtn(!micEnabled)}
               title={micEnabled ? "Mute Microphone" : "Unmute Microphone"}
@@ -1431,6 +1402,7 @@ export default function Theater() {
               {micEnabled ? <MicIcon /> : <MicOffIcon />}
             </button>
             <button
+              type="button"
               onClick={toggleVideo}
               className={ctrlBtn(!videoEnabled)}
               title={videoEnabled ? "Turn Off Camera" : "Turn On Camera"}
@@ -1439,6 +1411,7 @@ export default function Theater() {
             </button>
             {isHost && (
               <button
+                type="button"
                 onClick={toggleMovieBroadcast}
                 className={ctrlBtn(isBroadcastingMovie)}
                 title={
@@ -1451,6 +1424,7 @@ export default function Theater() {
               </button>
             )}
             <button
+              type="button"
               onClick={toggleScreenShare}
               className={ctrlBtn(isScreenSharing)}
               title={isScreenSharing ? "Stop Screen Share" : "Share Screen"}
@@ -1460,6 +1434,7 @@ export default function Theater() {
 
             {!showWebcams && (
               <button
+                type="button"
                 onClick={() => setShowWebcams(true)}
                 className={ctrlBtn(false)}
                 title="Show Participant Webcams"
@@ -1468,18 +1443,20 @@ export default function Theater() {
               </button>
             )}
             <button
+              type="button"
               onClick={toggleChatDrawer}
-              className={`${ctrlBtn(isChatOpen)} relative`}
+              className={`${ctrlBtn(isChatOpen)} party-chat-toggle`}
               title="Toggle Meeting Chat"
             >
               <MessageIcon />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-bounce shadow">
+                <span className="party-unread-count">
                   {unreadCount}
                 </span>
               )}
             </button>
             <button
+              type="button"
               onClick={handleLeaveCall}
               className={ctrlBtn(false, true)}
               title="Leave Watch Party"
@@ -1487,8 +1464,8 @@ export default function Theater() {
               <PhoneOffIcon />
             </button>
           </div>
-        </div>
+        </section>
       )}
-    </div>
+    </main>
   );
 }

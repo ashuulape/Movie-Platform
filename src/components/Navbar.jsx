@@ -1,91 +1,122 @@
-import React, { useContext, useState } from "react";
-
+import React, { useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { dataContext } from "../Context/Moviedatacontext";
 import { searchContext } from "../Context/MovieSearchcontext";
-import { SidebarBtn } from "./Sidebar";
+import { Button, Input } from "./UI";
 
-const Navbar = ({ side }) => {
+const Navbar = () => {
   const navigate = useNavigate();
-  const { loading, setLoading, setcategory, category } =
-    useContext(searchContext);
+  const { setLoading, category } = useContext(searchContext);
   const { setmoviedata } = useContext(dataContext);
   const { search, setsearch } = useContext(searchContext);
 
-  async function fetchdata(search) {
+  async function fetchdata(query) {
+    if (!query?.trim()) return;
     setmoviedata(null);
     navigate("/");
     setLoading(true);
-    const res = await axios.get(
-      `https://api.themoviedb.org/3/search/${category ? "movie" : "tv"}?query=${search}&page=1`,
-      {
-        headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
+    try {
+      const res = await axios.get(
+        `https://api.themoviedb.org/3/search/${category ? "movie" : "tv"}?query=${query}&page=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
+          },
         },
-      },
-    );
-
-    setmoviedata(res?.data?.results);
-    setLoading(false);
+      );
+      setmoviedata(res?.data?.results || []);
+    } catch (err) {
+      console.error("Search error:", err);
+      setmoviedata([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <section className="w-full sticky right-0 left-0 z-10 top-0 h-15 md:h-[8dvh] bg-[#0f0f0f]/20 backdrop-blur-3xl flex justify-between   sm:px-10 outline-white/30 outline-1">
-      <div className="flex gap-0 sm:gap-4">
-        {side && <SidebarBtn />}
-        <div
+    <header className="app-navbar">
+      <div className="navbar-start">
+        <button
+          type="button"
           onClick={() => {
             setsearch("");
+            setmoviedata(null);
             navigate("/");
           }}
-          className="flex sm:px-0 px-4  h-full items-center justify-center border-r-1  border-white/30"
+          className="navbar-brand"
+          aria-label="FreeTube Home"
         >
-          <img
-            className="md:h-10 h-8 rotate-z-180 "
-            src="https://img.icons8.com/?size=200&id=37326&format=png&color=d02525"
-            alt=""
-          />
-          <h2 className="sm:block hidden  md:text-2xl text-sm sm:px-2 px-4 h-fit w-fit font-semibold tracking-tighter font-roboto pointer-events-none">
-            FreeTube
-          </h2>
-        </div>
+          <span className="brand-logo" aria-hidden="true">
+            <svg
+              width="34"
+              height="24"
+              viewBox="0 0 34 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="34" height="24" rx="7" fill="#E50914" />
+              <polygon points="13.5,6.5 23.5,12 13.5,17.5" fill="#FFFFFF" />
+            </svg>
+          </span>
+          <span className="brand-text">FreeTube</span>
+        </button>
       </div>
-      <div className="flex h-full  items-center py-3">
-        <div className="h-full min-w-45  w-[30vw] max-w-150 flex overflow-hidden rounded-4xl outline-1 outline-white/20">
-          <input
-            onChange={(e) => setsearch(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                fetchdata(search);
-              }
-            }}
-            value={search}
-            type="text"
-            className="w-[90%] text-xl md:text-2xl flex  font-semibold h-full bg-[#0f0f0f]/50 flex-5 rounded-[4xl_0_0_4xl]  focus:outline-0 md:px-10 px-4 "
-          />
 
-          <button
-            onClick={() => fetchdata(search)}
-            className="h-full min-w-fit  aspect-square bg-[#202526]/40 flex justify-center p-2 text-white flex-1"
+      <div className="navbar-search">
+        <Input
+          onChange={(e) => setsearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              fetchdata(search);
+            }
+          }}
+          value={search}
+          type="text"
+          placeholder="Search movies or shows"
+          aria-label="Search movies or TV shows"
+        />
+        <Button
+          type="button"
+          variant="icon"
+          onClick={() => fetchdata(search)}
+          aria-label="Search"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
           >
-            <img
-              src="https://img.icons8.com/?size=100&id=aBNtkpYvycsP&format=png&color=ffffff"
-              alt=""
-            />
-          </button>
-        </div>
+            <circle cx="10.8" cy="10.8" r="6.8" />
+            <path d="m16 16 4.5 4.5" />
+          </svg>
+        </Button>
       </div>
-      <div className="h-full py-4 border-l-1 border-white/30">
-        <a target="blank" href="https://github.com/ashuulape">
-          <img
-            className="h-full px-4"
-            src="https://img.icons8.com/?size=150&id=zuHqpgzrusU5&format=png&color=f1f1f1"
-            alt="github"
-          />
+
+      <div className="navbar-actions">
+        <a
+          className="navbar-github"
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/ashuulape"
+          aria-label="GitHub"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.1-1.5 6.1-6.7a5.2 5.2 0 0 0-1.4-3.6 4.8 4.8 0 0 0-.1-3.6s-1.2-.4-3.8 1.4a13 13 0 0 0-6.9 0C5.4 1.2 4.2 1.6 4.2 1.6a4.8 4.8 0 0 0-.1 3.6 5.2 5.2 0 0 0-1.4 3.6c0 5.2 3.1 6.4 6.1 6.7a3.4 3.4 0 0 0-.9 2.6V22" />
+          </svg>
         </a>
       </div>
-    </section>
+    </header>
   );
 };
 

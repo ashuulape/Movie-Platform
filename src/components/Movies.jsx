@@ -4,6 +4,7 @@ import { dataContext } from "../Context/Moviedatacontext";
 import axios from "axios";
 import HomeSkeleton from "./HomeSkeleton";
 import { searchContext } from "../Context/MovieSearchcontext";
+import { Button } from "./UI";
 
 const Movies = () => {
   const { loading, setLoading, category } = useContext(searchContext);
@@ -68,38 +69,52 @@ const Movies = () => {
     fetchplayingMovies();
   }, [movielistno, pageno, category]);
 
-  if (loading || !moviedata) {
+  if (loading) {
     return <HomeSkeleton />;
   }
 
-  return (
-    <div className="w-fit flex flex-col pb-10 items-center ">
-      <div className="w-[90%] pb-8 h-fit flex flex-wrap gap-4 md:gap-10">
-        {moviedata.map((e, key) => {
-          return <Card key={key} data={e} />;
-        })}
+  if (!moviedata) {
+    return (
+      <div className="ui-error" role="alert">
+        We could not load titles. Please try again later.
       </div>
-      <div className="  flex gap-10 justify-center text-sm sm:text-xl font-bold">
-        <button
+    );
+  }
+
+  return (
+    <section className="catalog-results">
+      <div className="movie-grid">
+        {moviedata.length ? (
+          moviedata.map((e, key) => <Card key={key} data={e} />)
+        ) : (
+          <p className="ui-empty">No titles found for this selection.</p>
+        )}
+      </div>
+      <nav className="pagination" aria-label="Movie pages">
+        <Button
+          variant="icon"
           onClick={() => setpageno((prev) => Math.max(1, prev - 1))}
           disabled={pageno === 1}
-          className={`w-fit h-fit px-2 py-1 bg-black/40 outline-1 outline-white/30 rounded ${
-            pageno === 1 ? "disabled" : ""
-          }`}
+          aria-label="Previous page"
         >
-          {"<<"}
-        </button>
-        <h1 className="w-fit  h-fit px-4 py-1 bg-black/40 outline-1 outline-white/30 rounded">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="m14 18-6-6 6-6" />
+          </svg>
+        </Button>
+        <span className="pagination__number">
           {pageno}
-        </h1>
-        <button
+        </span>
+        <Button
+          variant="icon"
           onClick={() => setpageno((prev) => Math.max(1, prev + 1))}
-          className="w-fit  h-fit px-2 py-1 bg-black/40 outline-1 outline-white/30 rounded"
+          aria-label="Next page"
         >
-          {">>"}
-        </button>
-      </div>
-    </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="m10 18 6-6-6-6" />
+          </svg>
+        </Button>
+      </nav>
+    </section>
   );
 };
 

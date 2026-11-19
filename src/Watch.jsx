@@ -94,25 +94,22 @@ export default function Watch() {
   console.log();
 
   return (
-    <section className="w-[100dvw] overflow-x-clip h-fit min-h-screen min-w-full">
+    <main className="watch-page page-enter">
       <Navbar side={false} />
 
       {loading ? (
         <WatchSkeleton />
+      ) : !moviedata ? (
+        <div className="ui-error watch-fetch-error" role="alert">
+          We could not load this title. Please try again later.
+        </div>
       ) : (
         <>
-          <div className="flex xl:flex-row flex-col w-[100dvw] h-auto  border-b-1 border-white/30 ">
+          <div className={`watch-layout ${isReleased ? "" : "watch-layout--unreleased"}`}>
+            <div className="watch-primary">
             {isReleased && (
-              <div className="md:py-10 py-4 px-2 w-full flex flex-col md:gap-4 gap-2 items-center flex-7 md:px-8 outline-1 outline-white/30 backdrop-blur-3xl ">
-                <div
-                  className="absolute inset-0 blur-2xl opacity-30 scale-110 "
-                  style={{
-                    backgroundImage: `url(${moviedata?.backdrops[0]})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                ></div>
-                <div className="bg-black pb-2 h-fit w-full  rounded-sm md:rounded-2xl overflow-hidden flex flex-col items-center md:gap-2 text-center">
+              <section className="watch-main">
+                <div className="player-container">
                   {!istv ? (
                     <ScreenMovie stateid={state?.id} id={id} />
                   ) : (
@@ -123,67 +120,70 @@ export default function Watch() {
                       epno={epNo}
                     />
                   )}
-
-                  <div className="flex items-center gap-10">
-                    {!istv && (
-                      <button
-                        onClick={() => handletogether(id, moviedata?.title)}
-                        className="w-fit h-fit px-8 py-2 bg-white text-black font-semibold items-center gap-2 my-4 flex  rounded-sm pointer-events-auto relative "
-                      >
-                        Watch Together <UsersIcon />
-                      </button>
-                    )}
-                    <h1 className=" text-sm my-2 md:text-xl h-fit  font-semibold font-roboto outline-1 outline-white/30 px-2 rounded bg-black/40 ">
-                      Server {serverno}
-                    </h1>
-                  </div>
-                  <h2 className="text-red-700 font-semibold text-[10px] md:text-lg">
-                    <span className="font-bold">NOTE : </span>
-                    Player contains Ads — try using an Adblocker or Brave
-                    Browser for an Ad-free experience
-                  </h2>
                 </div>
-                {istv && (
-                  <div className="w-full h-fit text-white font-thin relative flex flex-col gap-2">
-                    <h2 className="font-bold">Seasons :</h2>
-                    <div className="flex w-full gap-2 text-white font-bold flex-wrap">
-                      {moviedata?.seasons?.slice(0).map((e, idx) => (
-                        <button
-                          onClick={() => setseasonno(idx)}
-                          className={`max-w-fit min-w-14 px-2 rounded-sm ${seasonno == e?.season_number ? "bg-[#EDEBEA] text-black" : "bg-[#232323]/30 outline-1 outline-white/10"}`}
-                          id={idx}
-                        >
-                          {moviedata?.seasons[1]?.name?.startsWith("Season")
-                            ? e?.name
-                            : e?.season_number == 0
-                              ? e?.name
-                              : e?.season_number}
-                        </button>
-                      ))}
-                    </div>
-                    <h2 className="font-bold">Episode : </h2>
-                    <div className="grid grid-cols-6 sm:grid-cols-12 auto-rows-max w-full gap-2 text-white font-bold">
-                      {Array.from(
-                        {
-                          length: moviedata?.seasons?.find(
-                            (e) => e?.season_number == seasonno,
-                          )?.episode_count,
-                        },
-                        (_, idx) => (
-                          <button
-                            className={` px-2 rounded-sm ${epNo == idx + 1 ? "bg-[#EDEBEA] text-black" : "bg-[#232323]/30 outline-1 outline-white/10"}`}
-                            onClick={() => setepNo(idx + 1)}
-                            key={idx}
-                          >
-                            {idx + 1}
-                          </button>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
+                <div className="player-actions">
+                  {!istv && (
+                    <button
+                      type="button"
+                      onClick={() => handletogether(id, moviedata?.title)}
+                      className="ui-button ui-button--primary"
+                    >
+                      Watch Together <UsersIcon />
+                    </button>
+                  )}
+                  <span className="server-label">Playback server {serverno}</span>
+                </div>
+                <p className="advisory">
+                  Player contains ads. Use an ad blocker or Brave for an
+                  ad-free experience.
+                </p>
+              </section>
             )}
+            {istv && isReleased && (
+              <section className="episode-panel">
+                <h2>Seasons</h2>
+                <div className="episode-list">
+                  {moviedata?.seasons?.slice(0).map((e, idx) => (
+                    <button
+                      type="button"
+                      onClick={() => setseasonno(idx)}
+                      className="episode-button"
+                      aria-pressed={seasonno == e?.season_number}
+                      id={idx}
+                      key={idx}
+                    >
+                      {moviedata?.seasons[1]?.name?.startsWith("Season")
+                        ? e?.name
+                        : e?.season_number == 0
+                          ? e?.name
+                          : e?.season_number}
+                    </button>
+                  ))}
+                </div>
+                <h2>Episodes</h2>
+                <div className="episode-list">
+                  {Array.from(
+                    {
+                      length: moviedata?.seasons?.find(
+                        (e) => e?.season_number == seasonno,
+                      )?.episode_count,
+                    },
+                    (_, idx) => (
+                      <button
+                        type="button"
+                        className="episode-button"
+                        aria-pressed={epNo == idx + 1}
+                        onClick={() => setepNo(idx + 1)}
+                        key={idx}
+                      >
+                        {idx + 1}
+                      </button>
+                    ),
+                  )}
+                </div>
+              </section>
+            )}
+            </div>
             {moviedata && (
               <Data
                 moviedata={moviedata}
@@ -193,11 +193,10 @@ export default function Watch() {
             )}
           </div>
           <Similar istv={istv} id={state?.id || id} />
-          <div className="w-full flex gap-4"></div>
           {moviedata && isReleased && <Bottom moviedata={moviedata} />}
         </>
       )}
-    </section>
+    </main>
   );
 }
 
@@ -207,7 +206,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 1) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
+        className="player-frame"
         src={`${import.meta.env.VITE_SERVER_1}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -217,7 +216,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 2) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
+        className="player-frame"
         src={`${import.meta.env.VITE_SERVER_2}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -227,7 +226,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 3) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video"
+        className="player-frame"
         src={`${import.meta.env.VITE_SERVER_3}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -237,7 +236,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 4) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
+        className="player-frame"
         src={`${import.meta.env.VITE_SERVER_4}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -247,7 +246,7 @@ export const ScreenMovie = ({ id, stateid }) => {
   if (serverno === 5) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
+        className="player-frame"
         src={`${import.meta.env.VITE_SERVER_5}${movieid}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -263,7 +262,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 1) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video"
+        className="player-frame"
         src={`${import.meta.env.VITE_TV_SERVER_1}${movieid}/${sno}/${epno}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -273,7 +272,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 2) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
+        className="player-frame"
         src={`${import.meta.env.VITE_TV_SERVER_2}${movieid}&s=${sno}&e=${epno}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -283,7 +282,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 3) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video"
+        className="player-frame"
         src={`${import.meta.env.VITE_TV_SERVER_3}${movieid}&s=${sno}&e=${epno}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -293,7 +292,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 4) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video"
+        className="player-frame"
         src={`${import.meta.env.VITE_TV_SERVER_4}${movieid}/${sno}/${epno}`}
         frameBorder="0"
         allowFullScreen={true}
@@ -303,7 +302,7 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
   if (serverno === 5) {
     return (
       <iframe
-        className="min-w-[70vw] relative w-full max-w-400 aspect-video "
+        className="player-frame"
         src={`${import.meta.env.VITE_TV_SERVER_5}${movieid}/${sno}/${epno}`}
         allowFullScreen={true}
       ></iframe>

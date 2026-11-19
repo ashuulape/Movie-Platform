@@ -1,6 +1,5 @@
-import axios, { spread } from "axios";
+import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { dataContext } from "../Context/Moviedatacontext";
 import { searchContext } from "../Context/MovieSearchcontext";
 import { useNavigate } from "react-router-dom";
 
@@ -105,16 +104,11 @@ const Hero = () => {
 
   if (loading) {
     return (
-      <div className="relative w-full md:h-[50vh] aspect-video bg-white/5 overflow-x-hidden flex items-end p-10">
-        <div className="w-1/2 h-full flex flex-col justify-end gap-4">
-          <div className="h-10 w-3/4 bg-white/10 rounded-md"></div>
-          <div className="flex gap-2">
-            <div className="h-6 w-16 bg-white/10 rounded-sm"></div>
-            <div className="h-6 w-20 bg-white/10 rounded-sm"></div>
-            <div className="h-6 w-24 bg-white/10 rounded-sm"></div>
-          </div>
-          <div className="h-4 w-full bg-white/10 rounded-md"></div>
-          <div className="h-4 w-4/5 bg-white/10 rounded-md"></div>
+      <div className="hero-loading" aria-hidden="true">
+        <div className="hero-loading__copy">
+          <div className="movie-skeleton__line" />
+          <div className="movie-skeleton__line movie-skeleton__line--short" />
+          <div className="movie-skeleton__line" />
         </div>
       </div>
     );
@@ -122,7 +116,7 @@ const Hero = () => {
 
   return (
     <section
-      className="relative w-full md:h-[50vh] max-h-fit overflow-x-hidden select-none"
+      className="hero-carousel"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -134,7 +128,7 @@ const Hero = () => {
     >
       <div
         ref={stripRef}
-        className="flex flex-row w-fit h-full transition-transform duration-700 ease-in-out"
+        className="hero-track"
         style={{ transform: `translateX(-${currentIndex * 100}vw)` }}
       >
         {herodata.map((e, index) => {
@@ -143,16 +137,13 @@ const Hero = () => {
       </div>
 
       {/* Dots Indicator */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+      <div className="hero-dots">
         {herodata.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              currentIndex === index
-                ? "bg-white scale-125"
-                : "bg-white/20 hover:bg-white/80"
-            }`}
+            className="hero-dot"
+            aria-current={currentIndex === index}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
@@ -203,56 +194,46 @@ export const Herocard = ({ data }) => {
       onClick={() =>
         handleroute(data?.id, data?.original_title, data?.media_type)
       }
-      className="w-[100dvw] flex aspect-video shrink-0 bg-cover bg-center"
+      className="hero-slide"
       style={{
-        backgroundImage: `linear-gradient(to right, rgba(0,0,0,0) 50%,rgba(0,0,0,0.5) 60%, rgba(15,15,15,0.9) 80%),url(https://image.tmdb.org/t/p/w1280${
-          data?.backdrop_path
-        })`,
-        backgroundSize: "100%",
-        backgroundRepeat: "no-repeat",
+        backgroundImage: `url(https://image.tmdb.org/t/p/w1280${data?.backdrop_path})`,
       }}
     >
-      <div className="w-auto h-full flex md:flex-3 flex-2 items-end justify-end py-10">
-        <div className="text-end flex flex-col items-end gap-2 lg:w-[75%]">
-          <h1 className="text-3xl text-sm font-bold font-roboto">
+      <div className="hero-copy">
+          <h1>
             {data?.title || data?.name}
           </h1>
 
-          <h2 className="flex gap-2 justify-end">
+          <div className="hero-genres">
             {data?.genre_ids.slice(0, 3).map((e) => (
-              <span className="text-[10px] md:text-sm font-thin outline-1 outline-white/30 rounded-sm px-2 backdrop-blur-lg bg-white/10">
+              <span className="hero-tag" key={e}>
                 {MOVIE_GENRES[e]}
               </span>
             ))}
-          </h2>
-          <h2 className="text-white/60 font-normal text-xs md:text-sm leading-tight">
+          </div>
+          <p className="hero-overview">
             {window.innerWidth < 768
               ? data?.overview.split("").splice(0, 200).join("")
               : data?.overview}
-          </h2>
-        </div>
+          </p>
       </div>
-      <div className="h-full relative w-fit py-4 px-2 flex-1 flex items-start  justify-start ">
-        <div className="relative w-fit h-full">
-          <img
-            className="h-full aspect-2/3  "
+      <div className="hero-poster-wrap">
+        <img
+            className="hero-poster"
             src={`https://image.tmdb.org/t/p/w400${data?.poster_path}`}
             alt=""
           ></img>
-          <span className="text-white text-xs md:text-lg absolute z-4 right-1/20 bg-black/40 backdrop-blur-xs top-1/40 outline-1  outline-white/30 px-2  rounded-xl font-bold">
+          <span className="hero-rating">
             {Math.floor(data?.vote_average * 10) / 10}
-            <span className="text-[8px] md:text-[10px] text-white/60 ">
+            <span>
               /10
             </span>
           </span>
           {window.innerWidth > 768 && (
-            <span className="text-white absolute z-4 left-1/40 bg-green-400/10 backdrop-blur-xs top-1/40 outline-1  outline-white/30 md:px-2 px-1 rounded-sm font-bold">
-              <span className="text-xs md:text-sm text-white ">
-                {data?.media_type == "tv" ? "Show" : "Movie"}
-              </span>
+            <span className="hero-type">
+              {data?.media_type == "tv" ? "Show" : "Movie"}
             </span>
           )}
-        </div>
       </div>
     </div>
   );
