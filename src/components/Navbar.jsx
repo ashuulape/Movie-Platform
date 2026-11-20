@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { dataContext } from "../Context/Moviedatacontext";
@@ -10,6 +10,7 @@ const Navbar = () => {
   const { setLoading, category } = useContext(searchContext);
   const { setmoviedata } = useContext(dataContext);
   const { search, setsearch } = useContext(searchContext);
+  const [ismobile, setismobile] = useState(false);
 
   async function fetchdata(query) {
     if (!query?.trim()) return;
@@ -34,6 +35,13 @@ const Navbar = () => {
     }
   }
 
+  useEffect(() => {
+    const checkSize = () => setismobile(window.innerWidth < 768);
+    checkSize();
+    window.addEventListener("resize", checkSize);
+    return () => window.removeEventListener("resize", checkSize);
+  }, []);
+
   return (
     <header className="app-navbar">
       <div className="navbar-start">
@@ -47,7 +55,7 @@ const Navbar = () => {
           className="navbar-brand"
           aria-label="FreeTube Home"
         >
-          <span className="brand-logo" aria-hidden="true">
+          <span className="brand-logo " aria-hidden="true">
             <svg
               width="34"
               height="24"
@@ -55,11 +63,15 @@ const Navbar = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect width="34" height="24" rx="7" fill="#E50914" />
-              <polygon points="13.5,6.5 23.5,12 13.5,17.5" fill="#FFFFFF" />
+              <rect width="34" height="24" rx="7" fill="#F62130" />
+              <polygon
+                points="13.5,6.5 23.5,12 13.5,17.5"
+                fill="#FFFFFF"
+                transform="translate(33, 0) scale(-1, 1)"
+              />
             </svg>
           </span>
-          <span className="brand-text">FreeTube</span>
+          {!ismobile && <span className="brand-text">FreeTube</span>}
         </button>
       </div>
 
