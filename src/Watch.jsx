@@ -149,150 +149,139 @@ export default function Watch() {
         </div>
       ) : (
         <>
-          <div
-            className={`watch-layout ${isReleased ? "" : "watch-layout--unreleased"}`}
-          >
+          <div className={`watch-layout ${isReleased ? "" : "watch-layout--unreleased"}`}>
             <div className="watch-primary">
-              {isReleased && (
-                <section className="watch-main">
-                  <div className="player-container">
-                    {!istv ? (
-                      <ScreenMovie stateid={state?.id} id={id} />
-                    ) : (
-                      <ScreenTv
-                        stateid={state?.id}
-                        id={id}
-                        sno={seasonno}
-                        epno={epNo}
-                      />
-                    )}
-                  </div>
-                  <div className="player-actions">
-                    {!istv ? (
+            {isReleased && (
+              <section className="watch-main">
+                <div className="player-container">
+                  {!istv ? (
+                    <ScreenMovie stateid={state?.id} id={id} />
+                  ) : (
+                    <ScreenTv
+                      stateid={state?.id}
+                      id={id}
+                      sno={seasonno}
+                      epno={epNo}
+                    />
+                  )}
+                </div>
+                <div className="player-actions">
+                  {!istv ? (
+                    <button
+                      type="button"
+                      onClick={() => handletogether(id, moviedata?.title)}
+                      className="ui-button ui-button--primary"
+                    >
+                      Watch Together <UsersIcon />
+                    </button>
+                  ) : (
+                    <div className="episode-nav-buttons">
                       <button
                         type="button"
-                        onClick={() => handletogether(id, moviedata?.title)}
+                        disabled={Number(epNo) <= 1}
+                        onClick={() =>
+                          setepNo((p) => Math.max(1, Number(p) - 1))
+                        }
+                        className="ui-button ui-button--secondary"
+                      >
+                        &larr; Prev Episode
+                      </button>
+                      <button
+                        type="button"
+                        disabled={totalEpisodes > 0 && Number(epNo) >= totalEpisodes}
+                        onClick={() =>
+                          setepNo((p) =>
+                            totalEpisodes > 0
+                              ? Math.min(totalEpisodes, Number(p) + 1)
+                              : Number(p) + 1,
+                          )
+                        }
                         className="ui-button ui-button--primary"
                       >
-                        Watch Together <UsersIcon />
+                        Next Episode &rarr;
                       </button>
-                    ) : (
-                      <div className="episode-nav-buttons">
-                        <button
-                          type="button"
-                          disabled={Number(epNo) <= 1}
-                          onClick={() =>
-                            setepNo((p) => Math.max(1, Number(p) - 1))
-                          }
-                          className="ui-button ui-button--secondary"
-                        >
-                          &larr; Prev Episode
-                        </button>
-                        <button
-                          type="button"
-                          disabled={
-                            totalEpisodes > 0 && Number(epNo) >= totalEpisodes
-                          }
-                          onClick={() =>
-                            setepNo((p) =>
-                              totalEpisodes > 0
-                                ? Math.min(totalEpisodes, Number(p) + 1)
-                                : Number(p) + 1,
-                            )
-                          }
-                          className="ui-button ui-button--primary"
-                        >
-                          Next Episode &rarr;
-                        </button>
-                      </div>
-                    )}
-                    <span className="server-label">
-                      Playback server {serverno}
+                    </div>
+                  )}
+                  <span className="server-label">Playback server {serverno}</span>
+                </div>
+                <p className="advisory">
+                  Player contains ads. Use an ad blocker or Brave for an
+                  ad-free experience.
+                </p>
+              </section>
+            )}
+            {istv && isReleased && (
+              <section className="episode-panel" aria-label="Seasons and Episodes">
+                <div className="episode-header-row">
+                  <h2>Seasons</h2>
+                  {currentSeason && (
+                    <span className="current-ep-badge">
+                      Playing: S{seasonno} E{epNo}
                     </span>
-                  </div>
-                  <p className="advisory">
-                    Player contains ads. Use an ad blocker or Brave for an
-                    ad-free experience.
-                  </p>
-                </section>
-              )}
-              {istv && isReleased && (
-                <section
-                  className="episode-panel"
-                  aria-label="Seasons and Episodes"
-                >
-                  <div className="episode-header-row">
-                    <h2>Seasons</h2>
-                    {currentSeason && (
-                      <span className="current-ep-badge">
-                        Playing: S{seasonno} E{epNo}
-                      </span>
-                    )}
-                  </div>
-                  <div className="episode-list">
-                    {moviedata?.seasons?.map((season) => {
-                      const isSelected =
-                        Number(seasonno) === Number(season?.season_number);
-                      const title =
-                        season?.name ||
-                        (season?.season_number === 0
-                          ? "Specials"
-                          : `Season ${season?.season_number}`);
+                  )}
+                </div>
+                <div className="episode-list">
+                  {moviedata?.seasons?.map((season) => {
+                    const isSelected =
+                      Number(seasonno) === Number(season?.season_number);
+                    const title =
+                      season?.name ||
+                      (season?.season_number === 0
+                        ? "Specials"
+                        : `Season ${season?.season_number}`);
 
+                    return (
+                      <button
+                        type="button"
+                        key={season?.id || season?.season_number}
+                        onClick={() => {
+                          setseasonno(season?.season_number);
+                          setepNo(1);
+                        }}
+                        className={`episode-button episode-button--season ${
+                          isSelected ? "episode-button--active" : ""
+                        }`}
+                        aria-pressed={isSelected}
+                      >
+                        {title}
+                        {season?.episode_count > 0 && (
+                          <span className="episode-badge">
+                            ({season.episode_count})
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="episode-header-row">
+                  <h2>Episodes ({totalEpisodes})</h2>
+                </div>
+                {totalEpisodes > 0 ? (
+                  <div className="episode-list episode-list--grid">
+                    {Array.from({ length: totalEpisodes }, (_, idx) => {
+                      const epNumber = idx + 1;
+                      const isCurrent = Number(epNo) === epNumber;
                       return (
                         <button
                           type="button"
-                          key={season?.id || season?.season_number}
-                          onClick={() => {
-                            setseasonno(season?.season_number);
-                            setepNo(1);
-                          }}
-                          className={`episode-button episode-button--season ${
-                            isSelected ? "episode-button--active" : ""
+                          key={epNumber}
+                          className={`episode-button ${
+                            isCurrent ? "episode-button--active" : ""
                           }`}
-                          aria-pressed={isSelected}
+                          aria-pressed={isCurrent}
+                          onClick={() => setepNo(epNumber)}
+                          title={`Season ${seasonno}, Episode ${epNumber}`}
                         >
-                          {title}
-                          {season?.episode_count > 0 && (
-                            <span className="episode-badge">
-                              ({season.episode_count})
-                            </span>
-                          )}
+                          {epNumber}
                         </button>
                       );
                     })}
                   </div>
-                  <div className="episode-header-row">
-                    <h2>Episodes ({totalEpisodes})</h2>
-                  </div>
-                  {totalEpisodes > 0 ? (
-                    <div className="episode-list episode-list--grid">
-                      {Array.from({ length: totalEpisodes }, (_, idx) => {
-                        const epNumber = idx + 1;
-                        const isCurrent = Number(epNo) === epNumber;
-                        return (
-                          <button
-                            type="button"
-                            key={epNumber}
-                            className={`episode-button ${
-                              isCurrent ? "episode-button--active" : ""
-                            }`}
-                            aria-pressed={isCurrent}
-                            onClick={() => setepNo(epNumber)}
-                            title={`Season ${seasonno}, Episode ${epNumber}`}
-                          >
-                            {epNumber}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <p className="ui-empty">
-                      No episodes found for this season.
-                    </p>
-                  )}
-                </section>
-              )}
+                ) : (
+                  <p className="ui-empty">No episodes found for this season.</p>
+                )}
+              </section>
+            )}
             </div>
             {moviedata && (
               <Data
