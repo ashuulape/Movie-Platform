@@ -1,4 +1,4 @@
-# FreeTube 🎬
+﻿# FreeTube 🎬
 
 **FreeTube** is a full-stack movie streaming web application built with React 19 + Vite on the frontend and a Node.js/Express + Socket.IO backend. It lets users discover, search, and watch movies with multi-server playback, rich metadata, official trailers, community reviews, and a real-time **Watch Together** theater mode with WebRTC video/audio chat.
 
@@ -6,42 +6,44 @@
 
 ## 🌟 Features
 
-| Feature | Description |
-|---|---|
-| 🍿 **Multi-Server Streaming** | Switch between 7 independent embed servers on the watch page for reliable playback |
-| 🔍 **Instant Search** | Real-time movie search via TMDB API with loading skeleton feedback |
-| 📂 **Category Browsing** | Browse *Now Playing*, *Popular*, *Top Rated*, and *Upcoming* with pagination |
+| Feature                         | Description                                                                                        |
+| ------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 🍿 **Multi-Server Streaming**   | Switch between 7 independent embed servers on the watch page for reliable playback                 |
+| 🔍 **Instant Search**           | Real-time movie search via TMDB API with loading skeleton feedback                                 |
+| 📂 **Category Browsing**        | Browse _Now Playing_, _Popular_, _Top Rated_, and _Upcoming_ with pagination                       |
 | 🎭 **Watch Together (Theater)** | Create/join rooms for synchronized movie watching with WebRTC video/audio calls and real-time chat |
-| 🎬 **Rich Movie Details** | Poster, backdrop, genres, rating, cast, runtime, release status, synopsis, and trailer |
-| 💬 **Community Reviews** | TMDB community reviews displayed per movie |
-| 📱 **Responsive Design** | Adaptive layout for mobile (horizontal card view) and desktop (poster grid view) |
-| ⚡ **GSAP Animations** | Smooth animated sidebar drawer powered by GSAP |
-| 💀 **Skeleton Loaders** | `HomeSkeleton` and `WatchSkeleton` for polished loading states |
+| 🎬 **Rich Movie Details**       | Poster, backdrop, genres, rating, cast, runtime, release status, synopsis, and trailer             |
+| 💬 **Community Reviews**        | TMDB community reviews displayed per movie                                                         |
+| 📱 **Responsive Design**        | Adaptive layout for mobile (horizontal card view) and desktop (poster grid view)                   |
+| ⚡ **GSAP Animations**          | Smooth animated sidebar drawer powered by GSAP                                                     |
+| 💀 **Skeleton Loaders**         | `HomeSkeleton` and `WatchSkeleton` for polished loading states                                     |
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-| Library | Purpose |
-|---|---|
-| [React 19](https://react.dev/) + [Vite 7](https://vitejs.dev/) | UI framework & dev tooling |
-| [React Router v7](https://reactrouter.com/) | Client-side routing |
-| [Tailwind CSS v4](https://tailwindcss.com/) | Utility-first styling |
-| [GSAP](https://greensock.com/gsap/) (`@gsap/react`) | Sidebar slide animation |
-| [Motion](https://motion.dev/) | Additional UI animations in Theater |
-| [Axios](https://axios-http.com/) | HTTP requests to TMDB & backend |
-| [Socket.IO Client](https://socket.io/) | Real-time room communication in Theater mode |
-| React Context API | Global state (`Moviedatacontext`, `MovieSearchcontext`) |
+
+| Library                                                        | Purpose                                                 |
+| -------------------------------------------------------------- | ------------------------------------------------------- |
+| [React 19](https://react.dev/) + [Vite 7](https://vitejs.dev/) | UI framework & dev tooling                              |
+| [React Router v7](https://reactrouter.com/)                    | Client-side routing                                     |
+| [Tailwind CSS v4](https://tailwindcss.com/)                    | Utility-first styling                                   |
+| [GSAP](https://greensock.com/gsap/) (`@gsap/react`)            | Sidebar slide animation                                 |
+| [Motion](https://motion.dev/)                                  | Additional UI animations in Theater                     |
+| [Axios](https://axios-http.com/)                               | HTTP requests to TMDB & backend                         |
+| [Socket.IO Client](https://socket.io/)                         | Real-time room communication in Theater mode            |
+| React Context API                                              | Global state (`Moviedatacontext`, `MovieSearchcontext`) |
 
 ### Backend (`miniserver/`)
-| Library | Purpose |
-|---|---|
-| [Express 5](https://expressjs.com/) | REST API server |
-| [Socket.IO](https://socket.io/) | WebSocket signaling server for Theater rooms |
-| [Axios](https://axios-http.com/) | Proxies movie data requests |
-| [CORS](https://github.com/expressjs/cors) | Cross-origin request handling |
-| [Dotenv](https://github.com/motdotla/dotenv) | Loads secrets from `.env` |
+
+| Library                                      | Purpose                                      |
+| -------------------------------------------- | -------------------------------------------- |
+| [Express 5](https://expressjs.com/)          | REST API server                              |
+| [Socket.IO](https://socket.io/)              | WebSocket signaling server for Theater rooms |
+| [Axios](https://axios-http.com/)             | Proxies movie data requests                  |
+| [CORS](https://github.com/expressjs/cors)    | Cross-origin request handling                |
+| [Dotenv](https://github.com/motdotla/dotenv) | Loads secrets from `.env`                    |
 
 ---
 
@@ -86,11 +88,11 @@ movies/
 
 ## 🧭 Application Routes
 
-| Path | Component | Description |
-|---|---|---|
-| `/` | `Home` | Movie discovery hub with category sidebar and paginated grid |
-| `/watch/:name/:id` | `Watch` | Movie watch page with embed player, server switcher, and details |
-| `/theater/:name/:id/:roomId` | `Theater` | Real-time Watch Together room with WebRTC video chat |
+| Path                         | Component | Description                                                      |
+| ---------------------------- | --------- | ---------------------------------------------------------------- |
+| `/`                          | `Home`    | Movie discovery hub with category sidebar and paginated grid     |
+| `/watch/:name/:id`           | `Watch`   | Movie watch page with embed player, server switcher, and details |
+| `/theater/:name/:id/:roomId` | `Theater` | Real-time Watch Together room with WebRTC video chat             |
 
 ---
 
@@ -107,36 +109,39 @@ The `/theater` page enables synchronized co-watching with friends:
 
 ### Socket.IO Event Reference
 
-| Event | Direction | Description |
-|---|---|---|
-| `join-room` | Client → Server | Join a named room with a display name |
-| `existing-users` | Server → Client | List of peers already in the room |
-| `user-joined` / `user-left` | Server → Room | Peer join/leave notifications |
-| `offer` / `answer` / `ice-candidate` | Relayed | WebRTC signaling messages |
-| `toggle-media-status` | Client → Room | Broadcast mic/camera enabled state |
-| `send-chat-message` / `receive-chat-message` | Both | Real-time text chat |
-| `change-stream-url` | Host → Room | Sync the shared movie URL to all viewers |
-| `room-state` | Server → Client | Initial room snapshot (host socket ID, stream URL, isHost) |
-| `host-changed` | Server → Room | New host assigned after host leaves |
-| `stream-url-updated` | Server → Room | Notify all peers that the stream URL changed |
+| Event                                        | Direction       | Description                                                |
+| -------------------------------------------- | --------------- | ---------------------------------------------------------- |
+| `join-room`                                  | Client → Server | Join a named room with a display name                      |
+| `existing-users`                             | Server → Client | List of peers already in the room                          |
+| `user-joined` / `user-left`                  | Server → Room   | Peer join/leave notifications                              |
+| `offer` / `answer` / `ice-candidate`         | Relayed         | WebRTC signaling messages                                  |
+| `toggle-media-status`                        | Client → Room   | Broadcast mic/camera enabled state                         |
+| `send-chat-message` / `receive-chat-message` | Both            | Real-time text chat                                        |
+| `change-stream-url`                          | Host → Room     | Sync the shared movie URL to all viewers                   |
+| `room-state`                                 | Server → Client | Initial room snapshot (host socket ID, stream URL, isHost) |
+| `host-changed`                               | Server → Room   | New host assigned after host leaves                        |
+| `stream-url-updated`                         | Server → Room   | Notify all peers that the stream URL changed               |
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - [Node.js](https://nodejs.org/) (v18+ recommended)
 - `npm`
 
 ### Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/ashuulape/Movie-Platform.git
    cd Movie-Platform
    ```
 
 2. **Install Frontend Dependencies**:
+
    ```bash
    npm install
    ```
@@ -183,30 +188,35 @@ SITE_URL=https://your-movie-data-api-endpoint/movie?tmdb_id=
 ## 🏃 Running the Application
 
 1. **Start the Backend Proxy Server**:
+
    ```bash
    cd miniserver
    node server.js
    ```
-   *The backend proxy and Socket.IO signaling server starts on `http://localhost:5000`.*
+
+   _The backend proxy and Socket.IO signaling server starts on `http://localhost:5000`._
 
 2. **Start the Frontend Development Server**:
    ```bash
    npm run dev
    ```
-   *Open your browser and navigate to the local Vite dev URL (typically `http://localhost:5173`).*
+   _Open your browser and navigate to the local Vite dev URL (typically `http://localhost:5173`)._
 
 ---
 
 ## 🌐 API Integration
 
 ### TMDB (The Movie Database)
+
 The frontend fetches movie lists and search results directly from TMDB:
+
 - **Movie lists**: `GET /3/movie/{now_playing|popular|top_rated|upcoming}`
 - **Search**: `GET /3/search/movie?query=...`
 
 All requests use a Bearer token from `VITE_API_KEY` in the `Authorization` header.
 
 ### Backend Proxy (`miniserver`)
+
 Detailed per-movie data (cast, reviews, trailer, embed URLs, backdrops) is fetched through the backend:
 
 ```
@@ -220,16 +230,18 @@ This keeps the upstream data source URL hidden from the browser and allows serve
 ## 📜 Scripts
 
 ### Frontend
-| Script | Description |
-|---|---|
-| `npm run dev` | Start Vite development server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Run ESLint |
+
+| Script            | Description                   |
+| ----------------- | ----------------------------- |
+| `npm run dev`     | Start Vite development server |
+| `npm run build`   | Build for production          |
+| `npm run preview` | Preview production build      |
+| `npm run lint`    | Run ESLint                    |
 
 ### Backend
-| Command | Description |
-|---|---|
+
+| Command          | Description                          |
+| ---------------- | ------------------------------------ |
 | `node server.js` | Start the Express + Socket.IO server |
 
 ---

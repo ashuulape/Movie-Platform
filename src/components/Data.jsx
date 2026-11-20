@@ -38,21 +38,27 @@ const data = ({ moviedata, setsource, isReleased }) => {
 
       {!isReleased && (
         <p className="release-warning">
-          {moviedata?.title || moviedata?.name} is not released yet or is not available.
+          {moviedata?.title || moviedata?.name} is not released yet or is not
+          available.
         </p>
       )}
 
       <p className="details-overview">{moviedata?.overview}</p>
       <div className="genre-list">
         {genres.map((e, idx) => (
-          <span className="genre-chip" key={idx}>{e}</span>
+          <span className="genre-chip" key={idx}>
+            {e}
+          </span>
         ))}
       </div>
 
       <div className="details-facts">
         <span>
           <strong>Cast:</strong>{" "}
-          {cast.map((e) => e?.name).filter(Boolean).join(", ") || "N/A"}
+          {cast
+            .map((e) => e?.name)
+            .filter(Boolean)
+            .join(", ") || "N/A"}
         </span>
         <span>
           <strong>Release date:</strong>{" "}
@@ -64,7 +70,9 @@ const data = ({ moviedata, setsource, isReleased }) => {
             ? `${Math.floor(moviedata.runtime / 60)}h ${Math.floor(moviedata.runtime % 60)}min`
             : "N/A"}
         </span>
-        <span><strong>Status:</strong> {moviedata?.status || "N/A"}</span>
+        <span>
+          <strong>Status:</strong> {moviedata?.status || "N/A"}
+        </span>
       </div>
 
       {isReleased && (
