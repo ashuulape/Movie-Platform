@@ -1,4 +1,4 @@
-﻿# FreeTube 🎬
+# FreeTube 🎬
 
 **FreeTube** is a full-stack movie streaming web application built with React 19 + Vite on the frontend and a Node.js/Express + Socket.IO backend. It lets users discover, search, and watch movies with multi-server playback, rich metadata, official trailers, community reviews, and a real-time **Watch Together** theater mode with WebRTC video/audio chat.
 
@@ -8,7 +8,7 @@
 
 | Feature | Description |
 |---|---|
-| 🍿 **Multi-Server Streaming** | Switch between 5 independent embed servers on the watch page for reliable playback |
+| 🍿 **Multi-Server Streaming** | Switch between 7 independent embed servers on the watch page for reliable playback |
 | 🔍 **Instant Search** | Real-time movie search via TMDB API with loading skeleton feedback |
 | 📂 **Category Browsing** | Browse *Now Playing*, *Popular*, *Top Rated*, and *Upcoming* with pagination |
 | 🎭 **Watch Together (Theater)** | Create/join rooms for synchronized movie watching with WebRTC video/audio calls and real-time chat |

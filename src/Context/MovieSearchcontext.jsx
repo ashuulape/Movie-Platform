@@ -1,12 +1,27 @@
 import React, { createContext, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 export const searchContext = createContext();
 const MovieSearchcontext = ({ children }) => {
   const [search, setsearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [serverno, setserverno] = useState(1);
   const [category, setcategory] = useState(true);
+
+  // Initialize serverno from URL query params (?server=X or ?serverno=X) if present
+  const [serverno, setserverno] = useState(() => {
+    try {
+      if (typeof window !== "undefined" && window.location?.search) {
+        const params = new URLSearchParams(window.location.search);
+        const srv = params.get("server") || params.get("serverno");
+        if (srv) {
+          const num = Number(srv);
+          if (num >= 1 && num <= 7) return num;
+        }
+      }
+    } catch {
+      // fallback to server 1
+    }
+    return 1;
+  });
 
   return (
     <searchContext.Provider

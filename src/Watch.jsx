@@ -38,9 +38,15 @@ export default function Watch() {
   const { state } = useLocation();
   const [moviedata, setmoviedata] = useState(null);
   const [setsource, source] = useState(null);
-  const [epNo, setepNo] = useState(1);
-  const [seasonno, setseasonno] = useState(1);
-  const { serverno } = useContext(searchContext);
+  const [epNo, setepNo] = useState(() => {
+    const ep = searchParams.get("ep") || searchParams.get("episode");
+    return ep ? Number(ep) || ep : 1;
+  });
+  const [seasonno, setseasonno] = useState(() => {
+    const s = searchParams.get("s") || searchParams.get("season");
+    return s ? Number(s) || s : 1;
+  });
+  const { serverno, setserverno } = useContext(searchContext);
 
   const [loading, setLoading] = useState(true);
 
@@ -66,6 +72,29 @@ export default function Watch() {
 
   const istv = category == "tv" ? true : false;
 
+  const currentSeason = moviedata?.seasons?.find(
+    (e) => Number(e?.season_number) === Number(seasonno),
+  );
+  const totalEpisodes = currentSeason?.episode_count || 0;
+
+  // Auto-select valid season if current seasonno is not found in moviedata
+  useEffect(() => {
+    if (istv && moviedata?.seasons?.length > 0) {
+      const match = moviedata.seasons.find(
+        (s) => Number(s?.season_number) === Number(seasonno),
+      );
+      if (!match) {
+        const fallback =
+          moviedata.seasons.find((s) => s?.season_number >= 1) ||
+          moviedata.seasons[0];
+        if (fallback) {
+          setseasonno(fallback.season_number);
+          setepNo(1);
+        }
+      }
+    }
+  }, [istv, moviedata?.seasons, seasonno]);
+
   const d = new Date();
   const formatted = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   const isReleased =
@@ -79,19 +108,34 @@ export default function Watch() {
     });
   }
 
+  // Sync URL search params with active season, episode, and playback server
   useEffect(() => {
+    const nextParams = {};
     if (istv) {
-      setsearchParams({ s: seasonno, ep: epNo });
+      nextParams.s = seasonno;
+      nextParams.ep = epNo;
     }
-  }, [istv, seasonno, epNo]);
+    if (serverno) {
+      nextParams.server = serverno;
+    }
+    setsearchParams(nextParams, { replace: true });
+  }, [istv, seasonno, epNo, serverno]);
 
+  // Read URL params and update state/context when params change
   useEffect(() => {
-    const { s, ep } = Object.fromEntries(searchParams);
-    s && setseasonno(s);
-    ep && setepNo(ep);
-  }, []);
+    const s = searchParams.get("s") || searchParams.get("season");
+    const ep = searchParams.get("ep") || searchParams.get("episode");
+    const srv = searchParams.get("server") || searchParams.get("serverno");
 
-  console.log();
+    if (s && Number(s) !== Number(seasonno)) setseasonno(Number(s) || s);
+    if (ep && Number(ep) !== Number(epNo)) setepNo(Number(ep) || ep);
+    if (srv) {
+      const parsedSrv = Number(srv);
+      if (parsedSrv >= 1 && parsedSrv <= 7 && parsedSrv !== Number(serverno)) {
+        setserverno(parsedSrv);
+      }
+    }
+  }, [searchParams]);
 
   return (
     <main className="watch-page page-enter">
@@ -105,84 +149,150 @@ export default function Watch() {
         </div>
       ) : (
         <>
-          <div className={`watch-layout ${isReleased ? "" : "watch-layout--unreleased"}`}>
+          <div
+            className={`watch-layout ${isReleased ? "" : "watch-layout--unreleased"}`}
+          >
             <div className="watch-primary">
-            {isReleased && (
-              <section className="watch-main">
-                <div className="player-container">
-                  {!istv ? (
-                    <ScreenMovie stateid={state?.id} id={id} />
-                  ) : (
-                    <ScreenTv
-                      stateid={state?.id}
-                      id={id}
-                      sno={seasonno}
-                      epno={epNo}
-                    />
-                  )}
-                </div>
-                <div className="player-actions">
-                  {!istv && (
-                    <button
-                      type="button"
-                      onClick={() => handletogether(id, moviedata?.title)}
-                      className="ui-button ui-button--primary"
-                    >
-                      Watch Together <UsersIcon />
-                    </button>
-                  )}
-                  <span className="server-label">Playback server {serverno}</span>
-                </div>
-                <p className="advisory">
-                  Player contains ads. Use an ad blocker or Brave for an
-                  ad-free experience.
-                </p>
-              </section>
-            )}
-            {istv && isReleased && (
-              <section className="episode-panel">
-                <h2>Seasons</h2>
-                <div className="episode-list">
-                  {moviedata?.seasons?.slice(0).map((e, idx) => (
-                    <button
-                      type="button"
-                      onClick={() => setseasonno(idx)}
-                      className="episode-button"
-                      aria-pressed={seasonno == e?.season_number}
-                      id={idx}
-                      key={idx}
-                    >
-                      {moviedata?.seasons[1]?.name?.startsWith("Season")
-                        ? e?.name
-                        : e?.season_number == 0
-                          ? e?.name
-                          : e?.season_number}
-                    </button>
-                  ))}
-                </div>
-                <h2>Episodes</h2>
-                <div className="episode-list">
-                  {Array.from(
-                    {
-                      length: moviedata?.seasons?.find(
-                        (e) => e?.season_number == seasonno,
-                      )?.episode_count,
-                    },
-                    (_, idx) => (
+              {isReleased && (
+                <section className="watch-main">
+                  <div className="player-container">
+                    {!istv ? (
+                      <ScreenMovie stateid={state?.id} id={id} />
+                    ) : (
+                      <ScreenTv
+                        stateid={state?.id}
+                        id={id}
+                        sno={seasonno}
+                        epno={epNo}
+                      />
+                    )}
+                  </div>
+                  <div className="player-actions">
+                    {!istv ? (
                       <button
                         type="button"
-                        className="episode-button"
-                        aria-pressed={epNo == idx + 1}
-                        onClick={() => setepNo(idx + 1)}
-                        key={idx}
+                        onClick={() => handletogether(id, moviedata?.title)}
+                        className="ui-button ui-button--primary"
                       >
-                        {idx + 1}
+                        Watch Together <UsersIcon />
                       </button>
-                    ),
+                    ) : (
+                      <div className="episode-nav-buttons">
+                        <button
+                          type="button"
+                          disabled={Number(epNo) <= 1}
+                          onClick={() =>
+                            setepNo((p) => Math.max(1, Number(p) - 1))
+                          }
+                          className="ui-button ui-button--secondary"
+                        >
+                          &larr; Prev Episode
+                        </button>
+                        <button
+                          type="button"
+                          disabled={
+                            totalEpisodes > 0 && Number(epNo) >= totalEpisodes
+                          }
+                          onClick={() =>
+                            setepNo((p) =>
+                              totalEpisodes > 0
+                                ? Math.min(totalEpisodes, Number(p) + 1)
+                                : Number(p) + 1,
+                            )
+                          }
+                          className="ui-button ui-button--primary"
+                        >
+                          Next Episode &rarr;
+                        </button>
+                      </div>
+                    )}
+                    <span className="server-label">
+                      Playback server {serverno}
+                    </span>
+                  </div>
+                  <p className="advisory">
+                    Player contains ads. Use an ad blocker or Brave for an
+                    ad-free experience.
+                  </p>
+                </section>
+              )}
+              {istv && isReleased && (
+                <section
+                  className="episode-panel"
+                  aria-label="Seasons and Episodes"
+                >
+                  <div className="episode-header-row">
+                    <h2>Seasons</h2>
+                    {currentSeason && (
+                      <span className="current-ep-badge">
+                        Playing: S{seasonno} E{epNo}
+                      </span>
+                    )}
+                  </div>
+                  <div className="episode-list">
+                    {moviedata?.seasons?.map((season) => {
+                      const isSelected =
+                        Number(seasonno) === Number(season?.season_number);
+                      const title =
+                        season?.name ||
+                        (season?.season_number === 0
+                          ? "Specials"
+                          : `Season ${season?.season_number}`);
+
+                      return (
+                        <button
+                          type="button"
+                          key={season?.id || season?.season_number}
+                          onClick={() => {
+                            setseasonno(season?.season_number);
+                            setepNo(1);
+                          }}
+                          className={`episode-button episode-button--season ${
+                            isSelected ? "episode-button--active" : ""
+                          }`}
+                          aria-pressed={isSelected}
+                        >
+                          {title}
+                          {season?.episode_count > 0 && (
+                            <span className="episode-badge">
+                              ({season.episode_count})
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="episode-header-row">
+                    <h2>Episodes ({totalEpisodes})</h2>
+                  </div>
+                  {totalEpisodes > 0 ? (
+                    <div className="episode-list episode-list--grid">
+                      {Array.from({ length: totalEpisodes }, (_, idx) => {
+                        const epNumber = idx + 1;
+                        const isCurrent = Number(epNo) === epNumber;
+                        return (
+                          <button
+                            type="button"
+                            key={epNumber}
+                            className={`episode-button ${
+                              isCurrent ? "episode-button--active" : ""
+                            }`}
+                            aria-pressed={isCurrent}
+                            onClick={() => setepNo(epNumber)}
+                            title={`Season ${seasonno}, Episode ${epNumber}`}
+                          >
+                            {epNumber}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="ui-empty">
+                      No episodes found for this season.
+                    </p>
                   )}
-                </div>
-              </section>
-            )}
+                </section>
+              )}
             </div>
             {moviedata && (
               <Data
@@ -253,6 +363,26 @@ export const ScreenMovie = ({ id, stateid }) => {
       ></iframe>
     );
   }
+  if (serverno === 6) {
+    return (
+      <iframe
+        className="player-frame"
+        src={`${import.meta.env.VITE_SERVER_6}${movieid}`}
+        frameBorder="0"
+        allowFullScreen={true}
+      ></iframe>
+    );
+  }
+  if (serverno === 7) {
+    return (
+      <iframe
+        className="player-frame"
+        src={`${import.meta.env.VITE_SERVER_7}${movieid}`}
+        frameBorder="0"
+        allowFullScreen={true}
+      ></iframe>
+    );
+  }
 };
 
 export const ScreenTv = ({ id, stateid, sno, epno }) => {
@@ -304,6 +434,26 @@ export const ScreenTv = ({ id, stateid, sno, epno }) => {
       <iframe
         className="player-frame"
         src={`${import.meta.env.VITE_TV_SERVER_5}${movieid}/${sno}/${epno}`}
+        allowFullScreen={true}
+      ></iframe>
+    );
+  }
+  if (serverno === 6) {
+    return (
+      <iframe
+        className="player-frame"
+        src={`${import.meta.env.VITE_TV_SERVER_6}${movieid}/${sno}/${epno}?hide=next`}
+        frameBorder="0"
+        allowFullScreen={true}
+      ></iframe>
+    );
+  }
+  if (serverno === 7) {
+    return (
+      <iframe
+        className="player-frame"
+        src={`${import.meta.env.VITE_TV_SERVER_7}${movieid}/${sno}/${epno}`}
+        frameBorder="0"
         allowFullScreen={true}
       ></iframe>
     );

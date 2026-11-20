@@ -1625,17 +1625,41 @@ textarea:focus-visible,
 /* ── Episode Panel ── */
 .episode-panel {
   margin-top: var(--space-4);
-  padding: var(--space-4);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   box-shadow: none;
 }
 
+.episode-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.episode-header-row h2,
 .episode-panel h2 {
-  margin: 0 0 var(--space-2);
+  margin: 0;
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.current-ep-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(229, 9, 20, 0.15);
+  border: 1px solid rgba(229, 9, 20, 0.35);
+  color: var(--brand-bright);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 .episode-list {
@@ -1645,8 +1669,18 @@ textarea:focus-visible,
   margin-bottom: var(--space-4);
 }
 
+.episode-list--grid {
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
 .episode-button {
-  min-width: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
   min-height: 40px;
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--border);
@@ -1655,20 +1689,39 @@ textarea:focus-visible,
   color: var(--text-muted);
   font-size: 13px;
   font-weight: 600;
-  transition: background var(--transition-ui), color var(--transition-ui), border-color var(--transition-ui);
+  cursor: pointer;
+  transition: all var(--transition-ui);
 }
 
 .episode-button:hover {
   background: var(--surface-hover);
   color: var(--text);
   border-color: var(--border-hover);
+  transform: translateY(-1px);
 }
 
-.episode-button[aria-pressed="true"] {
+.episode-button[aria-pressed="true"],
+.episode-button--active {
   border-color: var(--brand);
   background: var(--brand);
   color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.35);
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.40);
+}
+
+.episode-button--season {
+  min-width: unset;
+  padding: 8px 14px;
+}
+
+.episode-badge {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.episode-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* ── Watch Details Sidebar ── */

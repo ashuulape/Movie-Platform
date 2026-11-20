@@ -5,7 +5,7 @@ import { Button } from "./UI";
 const data = ({ moviedata, setsource, isReleased }) => {
   const { serverno, setserverno } = useContext(searchContext);
 
-  const servers = [1, 2, 3, 4, 5];
+  const servers = [1, 2, 3, 4, 5, 6, 7];
 
   useEffect(() => {
     if (moviedata?.embed_imdb && typeof setsource === "function") {
