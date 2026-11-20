@@ -81,7 +81,8 @@ export const Card = ({ data, vertical = false }) => {
   };
 
   const title = original_title || name || data?.title;
-  const poster = data?.poster || `https://image.tmdb.org/t/p/w400${poster_path}`;
+  const poster =
+    data?.poster || `https://image.tmdb.org/t/p/w400${poster_path}`;
   const genres = genre_ids
     ? genre_ids.slice(0, 3).map((genreId) => MOVIE_GENRES[genreId])
     : data?.genres;
@@ -106,12 +107,19 @@ export const Card = ({ data, vertical = false }) => {
     >
       {isMobileLayout ? (
         <>
-          <img loading="lazy" src={poster} alt="" className="movie-card__poster" />
+          <img
+            loading="lazy"
+            src={poster}
+            alt=""
+            className="movie-card__poster"
+          />
           <div className="movie-card__mobile-copy">
             <h2 className="movie-card__title">{title}</h2>
             <div className="movie-card__genres">
               {genres?.map((genre, idx) => (
-                <span className="genre-chip" key={idx}>{typeof genre === "string" ? genre : MOVIE_GENRES[genre]}</span>
+                <span className="genre-chip" key={idx}>
+                  {typeof genre === "string" ? genre : MOVIE_GENRES[genre]}
+                </span>
               ))}
             </div>
             <p className="movie-card__date">{release_date}</p>
@@ -120,28 +128,43 @@ export const Card = ({ data, vertical = false }) => {
               <span> Read more...</span>
             </p>
             {category && (
-              <span className={`release-badge${isreleased ? "" : " release-badge--upcoming"}`}>
+              <span
+                className={`release-badge${isreleased ? "" : " release-badge--upcoming"}`}
+              >
                 {isreleased ? "Released" : "Not Released"}
               </span>
             )}
           </div>
-          <span className="rating-badge movie-card__mobile-rating">
-            {Math.floor(vote_average * 10) / 10}<small>/10</small>
-          </span>
+          {isreleased && (
+            <span className="rating-badge movie-card__mobile-rating">
+              {Math.floor(vote_average * 10) / 10}
+              <small>/10</small>
+            </span>
+          )}
         </>
       ) : (
         <>
           <div className="movie-card__poster-wrap">
-            <img loading="lazy" src={poster} alt="" className="movie-card__poster" />
+            <img
+              loading="lazy"
+              src={poster}
+              alt=""
+              className="movie-card__poster"
+            />
             <div className="movie-card__badges">
               {category && (
-                <span className={`release-badge${isreleased ? "" : " release-badge--upcoming"}`}>
+                <span
+                  className={`release-badge${isreleased ? "" : " release-badge--upcoming"}`}
+                >
                   {isreleased ? "Released" : "Not Released"}
                 </span>
               )}
-              <span className="rating-badge">
-                {Math.floor(vote_average * 10) / 10}<small>/10</small>
-              </span>
+              {isreleased && (
+                <span className="rating-badge">
+                  {Math.floor(vote_average * 10) / 10}
+                  <small>/10</small>
+                </span>
+              )}
             </div>
           </div>
           <h2 className="movie-card__title">{title}</h2>

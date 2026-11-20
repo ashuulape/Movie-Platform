@@ -70,6 +70,8 @@ const Home = () => {
     <main className="catalog-page page-enter">
       <Navbar />
 
+      {!isSearching && <Hero />}
+
       <div className="catalog-content">
         {isSearching ? (
           /* Search Results View */
@@ -102,10 +104,8 @@ const Home = () => {
             )}
           </div>
         ) : (
-          /* Standard Home View with Hero, Browse, and Discover Sections */
+          /* Standard Home View with Browse and Discover Sections */
           <>
-            <Hero />
-
             {/* Browse Section directly under Hero with Category switcher and Layout toggle */}
             <Browse
               viewMode={globalViewMode}
